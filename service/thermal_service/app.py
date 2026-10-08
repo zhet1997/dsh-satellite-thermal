@@ -23,6 +23,7 @@ from .nx_adapter import NXAdapter
 from .runs import Scheduler, find_run, queue_requested, request_cancel
 from .schema import new_project, normalize, origin, physical, standard
 from .storage import DomainError, Store, digest, now, uid
+from .workspace import install_workspace_routes
 
 
 def clean(value):
@@ -45,8 +46,7 @@ def save_changed(store, project, before, force=False):
     if force or physical_changed:
         project["revision"] += 1
         project["updatedAt"] = now()
-        if physical_changed and project["settings"]["autoRun"] and project["geometry"]["status"] == "ready":
-            queue_requested(store, project)
+        # Edits create revisions. Only the explicit /runs action creates work.
     store.save(project)
     return project
 
@@ -56,6 +56,7 @@ def create_app(data_dir=None, adapter=None, start_scheduler=True):
     adapter = adapter or NXAdapter()
     scheduler = Scheduler(store, adapter)
     imports = ThreadPoolExecutor(max_workers=1, thread_name_prefix="thermal-import")
+    analyses = ThreadPoolExecutor(max_workers=2, thread_name_prefix="thermal-documents")
     geometry_processes = GeometryProcesses()
 
     @asynccontextmanager
@@ -64,6 +65,13 @@ def create_app(data_dir=None, adapter=None, start_scheduler=True):
         # leave the browser polling an importing state indefinitely after reboot.
         with store.lock:
             for p in store.list():
+                interrupted = False
+                for doc in p.get("documents", []):
+                    if doc.get("status") == "analyzing":
+                        doc.update(status="error", error="服务重启中断了分析，原文件保留，请重新提交。")
+                        interrupted = True
+                if interrupted:
+                    store.save(p)
                 if p["geometry"]["status"] == "importing":
                     p["geometry"]["status"] = "error"
                     p["geometry"]["error"] = "服务重启中断了导入，原文件已保留，请重新导入。"
@@ -74,10 +82,12 @@ def create_app(data_dir=None, adapter=None, start_scheduler=True):
         scheduler.stop()
         geometry_processes.close()
         imports.shutdown(wait=False, cancel_futures=True)
+        analyses.shutdown(wait=True, cancel_futures=True)
 
     app = FastAPI(title="Satellite Thermal Engineering Service", version=__version__, lifespan=lifespan)
     app.state.store, app.state.scheduler, app.state.adapter = store, scheduler, adapter
     app.state.geometry_processes = geometry_processes
+    install_workspace_routes(app, store)
 
     @app.middleware("http")
     async def authenticate(request: Request, call_next):
@@ -105,7 +115,7 @@ def create_app(data_dir=None, adapter=None, start_scheduler=True):
     @app.get("/api/health")
     def health():
         return {"status": "ok", "version": __version__, "solver": adapter.health(),
-                "capabilities": {"geometry": geometry.available(), "documents": True, "nx": bool(adapter.url), "analysis": ["steady-state"], "transient": "planned"}}
+                "capabilities": {"geometry": geometry.available(), "documents": True, "sessionBindings": True, "documentScreening": "local-keyword-context", "nx": bool(adapter.url), "analysis": ["steady-state"], "transient": "planned"}}
 
     @app.get("/api/projects")
     def projects():
@@ -313,34 +323,69 @@ def create_app(data_dir=None, adapter=None, start_scheduler=True):
         imports.submit(finish_geometry, pid, path, folder, p["geometry"]["source"], p["geometry"]["filename"], operation)
         return clean(p)
 
-    def consume_document(pid, path, name):
+    def consume_document(pid, path, name, role, doc_id):
         p = store.get(pid)
-        extracted = documents.extract(path, name, p["components"])
+        extracted = documents.extract(path, name, p["components"], role=role)
         with store.lock:
             p = store.get(pid)
             before = physical(p)
-            artifact = store.register(p, path, name)
             text_path = path.with_name(path.stem + ".extracted.txt")
             text_path.write_text(extracted["text"], encoding="utf-8")
             text_artifact = store.register(p, text_path, name + ".txt", "text/plain; charset=utf-8")
             applied, unmatched = documents.apply_records(p, extracted["records"])
-            p["documents"].append({"id": uid("doc-"), "name": name, "status": "applied" if applied else "needs-review",
-                                   "excerpt": extracted["text"][:6000], "sourceUrl": artifact["url"], "textUrl": text_artifact["url"], "sha256": artifact["sha256"],
-                                   "appliedValues": applied, "unmatchedComponents": unmatched, "_records": extracted["records"]})
+            doc = next(d for d in p["documents"] if d["id"] == doc_id)
+            doc.update({"status": "applied" if applied else "needs-review",
+                        "excerpt": extracted["excerpt"], "textUrl": text_artifact["url"],
+                        "screening": extracted["screening"], "_snippets": extracted["snippets"],
+                        "appliedRevision": p["revision"] + 1,
+                        "appliedValues": applied, "unmatchedComponents": unmatched, "_records": extracted["records"]})
             if extracted["cases"]:
-                p["cases"] = extracted["cases"]
+                # Async imports must not overwrite cases edited while parsing.
+                doc["suggestedCases"] = extracted["cases"]
+                if doc.get("_baseCases") == p["cases"]:
+                    p["cases"] = extracted["cases"]
+                else:
+                    doc["caseConflict"] = True
+            doc.pop("_baseCases", None)
             p = save_changed(store, p, before, force=True)
             return clean(p)
 
+    def finish_document(pid, path, name, role, doc_id):
+        try:
+            consume_document(pid, path, name, role, doc_id)
+        except Exception as exc:
+            logging.getLogger(__name__).exception("Document analysis failed")
+            with store.lock:
+                p = store.get(pid)
+                doc = next(d for d in p["documents"] if d["id"] == doc_id)
+                doc.update(status="error", error=exc.detail if isinstance(exc, DomainError) else "资料分析失败；原文件已保留，可重新提交。")
+                doc.pop("_baseCases", None)
+                store.save(p)
+
+    def enqueue_document(pid, path, name, role):
+        if role not in {"primary", "auxiliary"}:
+            raise DomainError("请选择重点资料或辅助资料。")
+        with store.lock:
+            p = store.get(pid)
+            art = store.register(p, path, name)
+            doc_id = uid("doc-")
+            p["documents"].append({"id": doc_id, "name": name, "role": role, "status": "analyzing",
+                "sourceUrl": art["url"], "sha256": art["sha256"], "submittedRevision": p["revision"],
+                "_baseCases": copy.deepcopy(p["cases"])})
+            p["updatedAt"] = now()
+            store.save(p)
+        analyses.submit(finish_document, pid, path, name, role, doc_id)
+        return clean(p)
+
     @app.post("/api/projects/{pid}/documents")
-    async def import_document(pid, file: UploadFile = File(...)):
+    async def import_document(pid, file: UploadFile = File(...), role: str = "primary"):
         store.get(pid)
         suffix = Path(file.filename or "").suffix.lower()
         if suffix not in {".xlsx", ".csv", ".tsv", ".docx", ".pdf", ".json", ".txt", ".md"}:
             raise DomainError("支持 Excel/CSV、Word、文字 PDF、JSON 和文本。", "unsupported_document")
         path = store.directory(pid) / "documents" / (uid("source-") + suffix)
         await receive(file, path)
-        return consume_document(pid, path, Path(file.filename or path.name).name)
+        return enqueue_document(pid, path, Path(file.filename or path.name).name, role)
 
     @app.post("/api/projects/{pid}/text")
     def import_text(pid, payload: dict):
@@ -351,7 +396,7 @@ def create_app(data_dir=None, adapter=None, start_scheduler=True):
         path = store.directory(pid) / "documents" / (uid("text-") + ".txt")
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(text, encoding="utf-8")
-        return consume_document(pid, path, "粘贴的热参数资料")
+        return enqueue_document(pid, path, "粘贴的热参数资料", payload.get("role", "primary"))
 
     @app.get("/api/projects/{pid}/standard")
     def get_standard(pid):
@@ -369,7 +414,17 @@ def create_app(data_dir=None, adapter=None, start_scheduler=True):
                 p["orbit"].update(payload["orbit"])
             p = normalize(p)
             folder = store.directory(pid) / "heatflux" / uid("flux-")
-            path = heatflux.calculate(p, folder, payload.get("time"), payload.get("season"))
+            revision = p["revision"]
+        # Orbit calculation may be expensive; never hold the project lock.
+        path = heatflux.calculate(p, folder, payload.get("time"), payload.get("season"))
+        with store.lock:
+            current = store.get(pid)
+            expect_revision(current, {"revision": revision})
+            # Preserve uploads/run status that can change without a revision.
+            for key in ("orbit", "cases", "heatfluxProfile"):
+                if key in p:
+                    current[key] = p[key]
+            p = current
             p["heatfluxSource"] = store.register(p, path, "six-direction-incident-flux.csv", "text/csv")
             p = save_changed(store, p, before)
             return clean(p)

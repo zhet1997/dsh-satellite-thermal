@@ -40,13 +40,15 @@ export async function request<T>(path:string, options:RequestInit = {}, timeoutM
 }
 const projectPath = (id:string) => `/projects/${encodeURIComponent(id)}`;
 export const api = {
+  binding:(sid:string)=>request<{projectId:string|null;selection:import('./types').Selection}>(`/sessions/${encodeURIComponent(sid)}/binding`),
+  bind:(sid:string,projectId:string,selection:import('./types').Selection={},updateSelectionOnly=false)=>request(`/sessions/${encodeURIComponent(sid)}/binding`,{method:'PUT',body:JSON.stringify({projectId,selection,updateSelectionOnly})}),
   health:()=>request<Health>('/health',{},REQUEST_TIMEOUTS.health), list:()=>request<{projects:Project[]}>('/projects'),
   create:(name:string)=>request<Project>('/projects',{method:'POST',body:JSON.stringify({name})}),
   example:()=>request<Project>('/projects/example',{method:'POST'},REQUEST_TIMEOUTS.processing),
   get:(id:string)=>request<Project>(projectPath(id)),
   save:(id:string,revision:number,patch:ProjectPatch)=>request<Project>(projectPath(id),{method:'PATCH',body:JSON.stringify({revision,...patch})}),
-  upload:(id:string,type:'geometry'|'documents',file:File)=>{const body=new FormData();body.append('file',file);return request<Project>(`${projectPath(id)}/${type}`,{method:'POST',body},REQUEST_TIMEOUTS.processing);},
-  text:(id:string,text:string)=>request<Project>(`${projectPath(id)}/text`,{method:'POST',body:JSON.stringify({text})},REQUEST_TIMEOUTS.processing),
+  upload:(id:string,type:'geometry'|'documents',file:File,role:'primary'|'auxiliary'='primary')=>{const body=new FormData();body.append('file',file);return request<Project>(`${projectPath(id)}/${type}?role=${role}`,{method:'POST',body},REQUEST_TIMEOUTS.processing);},
+  text:(id:string,text:string,role:'primary'|'auxiliary'='primary')=>request<Project>(`${projectPath(id)}/text`,{method:'POST',body:JSON.stringify({text,role})},REQUEST_TIMEOUTS.processing),
   standard:(id:string)=>request<Record<string,unknown>>(`${projectPath(id)}/standard`),
   heatflux:(id:string,body:unknown)=>request<Project>(`${projectPath(id)}/heatflux`,{method:'POST',body:JSON.stringify(body)},REQUEST_TIMEOUTS.processing),
   run:(id:string,revision:number,caseId?:string)=>request<Run>(`${projectPath(id)}/runs`,{method:'POST',body:JSON.stringify({revision,caseId})}),

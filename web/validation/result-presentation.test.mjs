@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {energyBalancePresentation,temperatureCelsius,temperatureDisplay,temperatureGradient,validTemperatureRange} from '../src/resultPresentation.ts';
+import {temperatureCheck,energyBalancePresentation,temperatureCelsius,temperatureDisplay,temperatureGradient,validTemperatureRange} from '../src/resultPresentation.ts';
 
 test('温度云图必须同时具有有效温标和实际顶点颜色',()=>{
   assert.equal(temperatureDisplay([273.15,303.15],0,12).showTemperature,false);
@@ -37,4 +37,15 @@ test('缺失热平衡报告不被判为通过，零设备功耗不显示虚假�
   const zero=energyBalancePresentation({status:'zero_input',input_power_W:0,solver_heat_load_W:45,radiation_heat_loss_W:45,residual_W:0,relative_residual:null});
   assert.equal(zero.available,true);assert.equal(zero.label,'零设备功耗工况');assert.equal(zero.metrics.find(m=>m.key==='relative').value,undefined);assert.match(zero.explanation,/不适用/);
   assert.equal(energyBalancePresentation().available,false);
+});
+
+test('工作温限分别检查低温、高温和缺失；采用传入的冻结限值',()=>{
+  const both=temperatureCheck(240,350,250,330);
+  assert.equal(both.low,true);assert.equal(both.high,true);
+  assert.equal(both.lowMargin,10);assert.equal(both.highMargin,20);
+  assert.equal(temperatureCheck(240,350).label,'未设置温限');
+  assert.equal(temperatureCheck(260,300,250).label,'已设单侧温限内');
+  assert.equal(temperatureCheck(NaN,300,250,330).valid,false);
+  assert.equal(temperatureCheck(300,260,250,330).valid,false);
+  assert.equal(temperatureCheck(250,330,250,330).label,'温限内');
 });

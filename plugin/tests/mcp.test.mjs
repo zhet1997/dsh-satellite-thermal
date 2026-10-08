@@ -19,7 +19,7 @@ test('MCP discovers tools, forwards a frozen revision and reports service errors
   try{
     await client.connect(transport)
     const {tools}=await client.listTools()
-    assert.equal(tools.length,13)
+    assert.equal(tools.length,16)
     assert.equal(tools.find(t=>t.name==='thermal_heatflux').inputSchema.required.includes('revision'),true)
     const updated=await client.callTool({name:'thermal_update',arguments:{projectId:'p-test',revision:7,patch:{components:[]}}})
     assert.equal(updated.isError,undefined);assert.equal(seen.method,'PATCH');assert.equal(JSON.parse(seen.body).revision,7);assert.equal(seen.authorization,'Bearer mcp-test-secret')
@@ -31,6 +31,10 @@ test('MCP discovers tools, forwards a frozen revision and reports service errors
     assert.deepEqual(JSON.parse(seen.body),{revision:8,orbit,time:120,season:'summer'})
     const stale=await client.callTool({name:'thermal_heatflux',arguments:{projectId:'p-test',revision:7,orbit}})
     assert.equal(stale.isError,true);assert.match(stale.content[0].text,/revision conflict/)
+    await client.callTool({name:'thermal_session_context',arguments:{sessionId:'session-a'}})
+    assert.equal(seen.url,'/api/sessions/session-a/context')
+    await client.callTool({name:'thermal_document_snippets',arguments:{projectId:'p-test',documentId:'doc-a',query:'温度'}})
+    assert.equal(seen.url,'/api/projects/p-test/documents/doc-a/snippets?query='+encodeURIComponent('温度')+'&offset=0')
     const before=requestCount
     for(const revision of [undefined,-1,1.5]){
       const invalid=await client.callTool({name:'thermal_heatflux',arguments:{projectId:'p-test',...(revision===undefined?{}:{revision}),orbit}})

@@ -23,6 +23,8 @@ sources = {
     'service/.dockerignore': root / 'service/.dockerignore',
     'service/requirements.txt': root / 'service/requirements.txt',
     'nx-worker/README.md': root / 'nx-worker/README.md',
+    'docs/0.2.0-会话工作台.md': root / 'docs/0.2.0-会话工作台.md',
+    'docs/开发目录迁移.md': root / 'docs/开发目录迁移.md',
     'docs/验证记录.md': root / 'docs/验证记录.md',
     'docs/新建项目卡顿定位与修复.md': root / 'docs/新建项目卡顿定位与修复.md',
 }

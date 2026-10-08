@@ -112,7 +112,34 @@ def text_records(text, source, component_names):
     return records
 
 
-def extract(path: Path, name, components):
+THERMAL_TERMS = re.compile(r"热|温度|温限|功耗|发射率|吸收率|材料|接触|厚度|thermal|temperature|conductiv|emissiv|absorpt|radiat|power|heat|contact|thickness|material", re.I)
+
+
+def screen(text, name, role):
+    lines = text.splitlines()
+    picked = set()
+    if role == "primary":
+        picked.update(range(len(lines)))
+    else:
+        for i, line in enumerate(lines):
+            if THERMAL_TERMS.search(line):
+                picked.update(range(max(0, i - 1), min(len(lines), i + 2)))
+    snippets, page = [], None
+    for i, line in enumerate(lines):
+        if line.startswith("[PDF 页 "):
+            page = line.strip("[]")
+        if i in picked and line.strip():
+            # Bound each retrieval item; retain location even for long paragraphs.
+            for start in range(0, len(line), 1600):
+                snippets.append({"location": f"{name} {page or ''} 第 {i+1} 行", "text": line[start:start+1600]})
+    focused = "\n".join(lines[i] if i in picked else "" for i in range(len(lines)))
+    return focused, snippets, {"method": "local-keyword-context" if role == "auxiliary" else "focused-source",
+        "totalLines": len(lines), "selectedLines": len(picked), "snippetCount": len(snippets),
+        "totalCharacters": len(text), "selectedCharacters": sum(len(lines[i]) for i in picked),
+        "mayMissRelevantContent": role == "auxiliary"}
+
+
+def extract(path: Path, name, components, role="primary"):
     suffix = path.suffix.lower()
     records, text, cases = [], "", []
     if suffix == ".json":
@@ -177,16 +204,18 @@ def extract(path: Path, name, components):
             raise DomainError("请提供未加密的文字型 PDF。", "encrypted_pdf")
         if len(reader.pages) > 500:
             raise DomainError("文档页数超过 500 页。", "document_too_large", 413)
-        text = "\n".join(p.extract_text() or "" for p in reader.pages)
+        text = "\n".join(f"[PDF 页 {i+1}]\n" + (p.extract_text() or "") for i, p in enumerate(reader.pages))
     elif suffix in {".txt", ".md"}:
         text = path.read_text("utf-8-sig")
     else:
         raise DomainError("支持 Excel .xlsx、CSV、Word .docx、文字 PDF、JSON 和文本。", "unsupported_document")
     if len(text) > 5_000_000:
         raise DomainError("提取的文本超过上限，请分批导入。", "document_too_large", 413)
+    focused, snippets, screening = screen(text, name, role)
     if suffix in {".txt", ".md", ".docx", ".pdf"}:
-        records.extend(text_records(text, name, [c["name"] for c in components]))
-    return {"text": text, "records": records, "cases": cases}
+        records.extend(text_records(focused, name, [c["name"] for c in components]))
+    return {"text": text, "records": records, "cases": cases, "snippets": snippets,
+            "screening": screening, "excerpt": "\n".join(s["location"] + ": " + s["text"] for s in snippets[:8])[:6000]}
 
 
 def validate_office(path):
@@ -208,6 +237,13 @@ def apply_records(project, records):
         component = matches[0]
         for key, value in row.items():
             if key not in FIELD_ALIASES or key in {"id", "name"}:
+                continue
+            previous = component.get("provenance", {}).get(key, {})
+            if previous.get("status") == "manual":
+                if component.get(key) != value:
+                    project.setdefault("_importIssues", []).append(issue(
+                        f"{component['name']} 的 {key} 与新资料冲突；保留用户输入。资料值：{value}，来源：{row.get('_source', '')}",
+                        cid=component["id"], field=key))
                 continue
             component[key] = value
             component.setdefault("provenance", {})[key] = origin("provided", row.get("_source", "导入资料"), value)

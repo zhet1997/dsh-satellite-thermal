@@ -1,3 +1,4 @@
+import { componentColor } from '../componentColors';
 import { useEffect, useRef, useState } from 'react';
 import { Box, Focus, Grid2X2, MousePointer2 } from 'lucide-react';
 import * as THREE from 'three';
@@ -47,12 +48,11 @@ export function ModelView({url,components,selection,relatedSelections=[],onSelec
         let cursor:THREE.Object3D|null=obj,componentId:string|undefined,faceId:string|undefined;
         while(cursor){const data=cursor.userData;componentId ||= data.componentId||data.component_id||data.partId;faceId ||= data.faceId||data.face_id;const match=components.find(c=>c.id===cursor?.name||c.name===cursor?.name);if(!componentId&&match)componentId=match.id;cursor=cursor.parent;}
         const index=Math.max(components.findIndex(c=>c.id===componentId),0),fallback=['#63929d','#c6b887','#7a9faa','#93bcb2','#8797ad','#b0b8be'][index%6];
-        const original=Array.isArray(obj.material)?obj.material[0]:obj.material;
         const colors=obj.geometry.getAttribute('color'),positions=obj.geometry.getAttribute('position');
         const vertexColored=source==='nx'&&!!colors&&colors.itemSize>=3&&colors.count>0&&colors.count===positions?.count;
         // Unlit vertex colors preserve the execution-side temperature palette.
         // Selection uses an outline rather than tinting a numerical heat map.
-        const material:DisplayMaterial=vertexColored?new THREE.MeshBasicMaterial({color:0xffffff,vertexColors:true,side:THREE.DoubleSide}):new THREE.MeshStandardMaterial({color:original?.color||fallback,metalness:.28,roughness:.6,side:THREE.DoubleSide});
+        const material:DisplayMaterial=vertexColored?new THREE.MeshBasicMaterial({color:0xffffff,vertexColors:true,side:THREE.DoubleSide}):new THREE.MeshStandardMaterial({color:componentId?componentColor(componentId):fallback,metalness:.28,roughness:.6,side:THREE.DoubleSide});
         if(vertexColored)colored++;
         obj.material=material;materials.current.push({mesh:obj,componentId,faceId,material,vertexColored});
       });
@@ -60,7 +60,7 @@ export function ModelView({url,components,selection,relatedSelections=[],onSelec
     },undefined,()=>{if(!disposed){setState('error');setError('三维预览暂时无法读取，请检查几何预览文件或重新导入。');}});
     let down={x:0,y:0};
     const pointerDown=(e:PointerEvent)=>{down={x:e.clientX,y:e.clientY};};
-    const pointerUp=(e:PointerEvent)=>{if(Math.hypot(e.clientX-down.x,e.clientY-down.y)>6)return;const rect=renderer.domElement.getBoundingClientRect(),pointer=new THREE.Vector2((e.clientX-rect.left)/rect.width*2-1,-(e.clientY-rect.top)/rect.height*2+1),ray=new THREE.Raycaster();ray.setFromCamera(pointer,camera);const hit=ray.intersectObjects(group.children,true)[0];if(hit){const found=materials.current.find(m=>m.mesh===hit.object);if(found?.componentId)pick.current?.({componentId:found.componentId,...(found.faceId?{faceId:found.faceId}:{})});}};
+    const pointerUp=(e:PointerEvent)=>{if(Math.hypot(e.clientX-down.x,e.clientY-down.y)>6)return;const rect=renderer.domElement.getBoundingClientRect(),pointer=new THREE.Vector2((e.clientX-rect.left)/rect.width*2-1,-(e.clientY-rect.top)/rect.height*2+1),ray=new THREE.Raycaster();ray.setFromCamera(pointer,camera);const hit=ray.intersectObjects(group.children,true)[0];if(hit){const found=materials.current.find(m=>m.mesh===hit.object);if(found?.componentId)pick.current?.({componentId:found.componentId});}};
     renderer.domElement.addEventListener('pointerdown',pointerDown);renderer.domElement.addEventListener('pointerup',pointerUp);
     let selectionKey='';
     const animate=()=>{frame=requestAnimationFrame(animate);controls.update();const key=JSON.stringify(selected.current);if(key!==selectionKey){updateOutline();selectionKey=key;}materials.current.forEach(m=>{if(m.material instanceof THREE.MeshStandardMaterial){const chosen=isSelected(m);m.material.emissive.set(chosen?0x166b59:0x000000);m.material.emissiveIntensity=chosen?.4:0;}});renderer.render(scene,camera);};animate();

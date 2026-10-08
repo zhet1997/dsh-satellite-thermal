@@ -6,9 +6,11 @@
 
 项目状态与实测范围见 [验证记录](docs/验证记录.md)。这是开发首版；结果页面只有在收到真实 NX 结果后才显示温度，不提供模拟成功的替代结果。
 
-首次安装请直接阅读 [中文安装与使用说明](docs/安装与使用.md)。完整安装套件为 `dist/dsh-thermal-web-0.1.1-installation.zip`，本机可直接使用的解压目录是 `release/dsh-thermal-web-0.1.1`。套件包含服务部署文件和启动辅助脚本；首次部署依赖可能需要联网。
+0.2.0 提供会话右侧工作台、异步辅助资料筛选和手动新增计算；升级必须同时更新轻量 service，NX worker 协议保持兼容。详见 [本次改动](docs/0.2.0-会话工作台.md)。
 
-已提供 `dist/lbk-dsh-satellite-thermal-0.1.1.tgz`（网页插件）、`dist/dsh_satellite_thermal_executor-0.1.0-py3-none-any.whl`（独立 NX 执行器）及 `dist/dsh-satellite-thermal-0.1.1-source.zip`（源码与部署文件）。校验值见 `dist/release-manifest.json`。源码包保留本地验证记录，不包含用户几何、登录信息或 NX 安装程序。
+首次安装请直接阅读 [中文安装与使用说明](docs/安装与使用.md)。完整安装套件为 `dist/dsh-thermal-web-0.2.0-installation.zip`，本机可直接使用的解压目录是 `release/dsh-thermal-web-0.2.0`。套件包含服务部署文件和启动辅助脚本；首次部署依赖可能需要联网。
+
+已提供 `dist/lbk-dsh-satellite-thermal-0.2.0.tgz`（网页插件）、`dist/dsh_satellite_thermal_executor-0.1.0-py3-none-any.whl`（独立 NX 执行器）及 `dist/dsh-satellite-thermal-0.2.0-source.zip`（源码与部署文件）。校验值见 `dist/release-manifest.json`。源码包保留本地验证记录，不包含用户几何、登录信息或 NX 安装程序。
 
 ## 三部分部署
 
@@ -22,10 +24,10 @@ NX 不包含在前两部分中。可以把 service 放在 Linux 容器，把 wor
 
 ## 安装到现有官方网页版
 
-构建后的 `dist/lbk-dsh-satellite-thermal-0.1.1.tgz` 是标准 npm 插件包，在左侧 **插件 → 添加插件** 的输入框粘贴 DSH 宿主服务器上的完整包路径，或通过官方命令安装：
+构建后的 `dist/lbk-dsh-satellite-thermal-0.2.0.tgz` 是标准 npm 插件包，在左侧 **插件 → 添加插件** 的输入框粘贴 DSH 宿主服务器上的完整包路径，或通过官方命令安装：
 
 ```powershell
-dsh plugin --profile web add D:\path\lbk-dsh-satellite-thermal-0.1.1.tgz
+dsh plugin --profile web add D:\path\lbk-dsh-satellite-thermal-0.2.0.tgz
 ```
 
 保留原有 bundles 与 profile 配置。开发时也可在已安装依赖的 `plugin` 目录执行 `node install-profile.mjs <已有profile名称>`，它只追加热插件并保存配置备份。不要把整个既有 profile 换成示例 profile。

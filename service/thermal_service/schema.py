@@ -69,7 +69,7 @@ def number(obj, key, default, bounds, issues, cid=None, sources=None, units="", 
     obj[key] = value
     if provenance[key]["status"] == "estimated":
         issues.append(issue(provenance[key].get("reason", f"{label}使用估值 {value:g} {units}，可修改后重算。"), cid, key,
-                            resolution="已填齐并允许继续；更正会创建新的运行。"))
+                            resolution="已填齐并允许继续；更正后保存新版本，可在运行页发起计算。"))
     return value
 
 
@@ -78,7 +78,7 @@ def new_project(name):
     return {"id": uid("p-"), "name": str(name or "未命名热分析")[:160], "revision": 0,
             "createdAt": stamp, "updatedAt": stamp, "geometry": {"status": "empty", "source": "step"},
             "components": [], "links": [], "boundaries": [], "cases": [], "orbit": dict(DEFAULT_ORBIT),
-            "settings": {"autoRun": True, "meshSizeMm": 10., "spaceTemperatureK": 3., "initialTemperatureK": 293.15},
+            "settings": {"autoRun": False, "meshSizeMm": 10., "spaceTemperatureK": 3., "initialTemperatureK": 293.15},
             "documents": [], "issues": [], "runs": [], "_artifacts": {}}
 
 
@@ -202,7 +202,7 @@ def normalize(project):
         boundary.setdefault("name", {"space": "空间辐射", "heatflux": "外热流", "temperature": "定温"}[boundary["kind"]])
 
     settings = p.setdefault("settings", {})
-    settings["autoRun"] = bool(settings.get("autoRun", True))
+    settings["autoRun"] = False  # Legacy clients cannot silently submit solves.
     number(settings, "meshSizeMm", 10, (0, 10000), issues, units="mm", strict_min=True)
     number(settings, "spaceTemperatureK", 3, (0, 1e5), issues, units="K")
     number(settings, "initialTemperatureK", 293.15, (0, 1e5), issues, units="K", strict_min=True)

@@ -5,7 +5,7 @@
 在 DSH 左侧 **插件 → 添加插件** 的文本框粘贴宿主服务器上 npm tgz 的完整路径，或使用：
 
 ```text
-dsh plugin --profile web add /path/to/lbk-dsh-satellite-thermal-0.1.1.tgz
+dsh plugin --profile web add /path/to/lbk-dsh-satellite-thermal-0.2.0.tgz
 ```
 
 DSH 设置 → 内置插件 → 卫星热建模，配置服务地址（默认 `http://127.0.0.1:8790`）和可选令牌。服务根地址不带 `/api`。点击“检查连接”确认热服务及 NX 状态。
@@ -14,4 +14,4 @@ DSH 设置 → 内置插件 → 卫星热建模，配置服务地址（默认 `h
 
 独立工作台：`/satellite-thermal/`。所有请求复用官方 DSH 浏览器认证；仅服务端附加热服务访问令牌。
 
-本包搭配 0.1.1 独立 service；NX worker 的 0.1.0 执行协议保持兼容，本次无需升级 NX worker。未收到真实求解证据时，不会展示伪造的计算结果。详细部署与验收范围在完整源码包 README 和 `docs/验证记录.md`。
+本包搭配 0.2.0 独立 service；NX worker 的 0.1.0 执行协议保持兼容，本次无需升级 NX worker。未收到真实求解证据时，不会展示伪造的计算结果。详细部署与验收范围在完整源码包 README 和 `docs/验证记录.md`。

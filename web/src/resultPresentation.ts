@@ -60,3 +60,11 @@ export function energyBalancePresentation(value?:Record<string,unknown>) {
   const explanation=!value?'执行端尚未提供能量平衡数据。':reasons[sourceReason]||sourceReason||(!hasSolverBalance?'尚未获得完整的求解器热收支。':input===0?'此工况设备输入功耗为零；绝对热收支仍可查看，相对偏差不适用。':'这些是求解器实际报告的热收支；是否满足要求需结合项目允许的偏差。');
   return {metrics,available,label,explanation};
 }
+
+export function temperatureCheck(minK:number,maxK:number,lower?:number|null,upper?:number|null){
+  const valid=Number.isFinite(minK)&&Number.isFinite(maxK)&&minK<=maxK;
+  const hasLower=typeof lower==='number'&&Number.isFinite(lower),hasUpper=typeof upper==='number'&&Number.isFinite(upper);
+  const low=valid&&hasLower&&minK<lower!,high=valid&&hasUpper&&maxK>upper!;
+  return {valid,low,high,hasLimit:hasLower||hasUpper,lowMargin:low?lower!-minK:0,highMargin:high?maxK-upper!:0,
+    label:!valid?'温度未完整回读':!hasLower&&!hasUpper?'未设置温限':low&&high?'低温 / 高温越限':low?'低于工作下限':high?'高于工作上限':hasLower&&hasUpper?'温限内':'已设单侧温限内'};
+}

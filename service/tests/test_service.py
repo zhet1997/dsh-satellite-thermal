@@ -23,6 +23,16 @@ def client(tmp_path):
         yield client
 
 
+def wait_documents(client, pid):
+    deadline = time.monotonic() + 10
+    while time.monotonic() < deadline:
+        p = client.get(f"/api/projects/{pid}").json()
+        if all(d["status"] != "analyzing" for d in p["documents"]):
+            return p
+        time.sleep(.01)
+    pytest.fail("document analysis did not finish")
+
+
 def test_nonblocking_estimates_are_finite_complete_and_traceable():
     p = new_project("malformed")
     p["components"] = [{"id": "c1", "kind": "shell", "power": "invalid", "conductivity": -3,
@@ -73,7 +83,8 @@ def test_real_example_preview_queue_snapshots_and_cancel(client):
     assert len(p["links"]) >= 2
     glb = client.get(p["geometry"]["previewUrl"])
     assert glb.content[:4] == b"glTF"
-    first = p["runs"][0]
+    assert p["runs"] == []
+    first = client.post(f"/api/projects/{p['id']}/runs", json={"revision": p["revision"]}).json()
     assert first["status"] == "queued"
     assert "result" not in first
     client.app.state.scheduler.tick()
@@ -83,6 +94,9 @@ def test_real_example_preview_queue_snapshots_and_cancel(client):
     components = p["components"]
     components[1]["power"] = 22
     updated = client.patch(f"/api/projects/{p['id']}", json={"revision": p["revision"], "components": components}).json()
+    assert len(updated["runs"]) == 1
+    client.post(f"/api/projects/{p['id']}/runs", json={"revision": updated["revision"]})
+    updated = client.get(f"/api/projects/{p['id']}").json()
     assert len(updated["runs"]) == 2
     old = client.get(f"/api/projects/{p['id']}/runs/{first['id']}").json()
     assert old["inputSnapshot"]["components"][1]["power"] == 18
@@ -119,12 +133,14 @@ def test_document_identity_and_units_do_not_spread_unrelated_numbers(client):
     pid = p["id"]
     csv = "组件名称,功耗(kW),温限上限(℃)\n演示载荷,0.021,65\n不存在的组件,999,12\n"
     p = client.post(f"/api/projects/{pid}/documents", files={"file": ("thermal.csv", csv.encode(), "text/csv")}).json()
+    p = wait_documents(client, pid)
     c = p["components"][1]
     assert c["power"] == 21
     assert c["temperatureLimitMax"] == 338.15
     assert p["components"][2]["power"] == 8
     assert p["documents"][-1]["unmatchedComponents"] == ["不存在的组件"]
     text = client.post(f"/api/projects/{pid}/text", json={"text": "卫星总质量 200 kg。一个无关设备功耗 100 W。"}).json()
+    text = wait_documents(client, pid)
     assert [c["power"] for c in text["components"]] == [0, 21, 8]
     assert text["documents"][-1]["status"] == "needs-review"
 
@@ -163,6 +179,8 @@ def test_active_cancel_requires_executor_ack(client):
 def test_lost_submit_response_is_reconciled_before_cancel(client):
     import httpx
     p = client.post("/api/projects/example").json()
+    client.post(f"/api/projects/{p['id']}/runs", json={"revision": p["revision"]})
+    p = client.get(f"/api/projects/{p['id']}").json()
     scheduler = client.app.state.scheduler
     adapter = scheduler.adapter
     accepted, cancelled = [], []
@@ -220,13 +238,14 @@ def test_empty_nx_completion_cannot_pass_as_real_result(client):
 @pytest.mark.skipif(not available(), reason="CadQuery optional")
 def test_cold_and_hot_are_separate_queued_runs(client):
     p = client.post("/api/projects/example").json()
-    original = p["runs"][0]["id"]
+    original = client.post(f"/api/projects/{p['id']}/runs", json={"revision": p["revision"]}).json()["id"]
     p = client.post(f"/api/projects/{p['id']}/heatflux", json={}).json()
-    assert len(p["runs"]) == 3
+    assert len(p["runs"]) == 1
     assert p["runs"][0]["id"] == original
-    assert {run["caseId"] for run in p["runs"][1:]} == {case["id"] for case in p["cases"]}
     manual = client.post(f"/api/projects/{p['id']}/runs", json={"revision": p["revision"]}).json()
     assert len(manual["queuedRunIds"]) == 2
+    updated = client.get(f"/api/projects/{p['id']}").json()
+    assert {run["caseId"] for run in updated["runs"][1:]} == {case["id"] for case in p["cases"]}
     assert len(client.get(f"/api/projects/{p['id']}").json()["runs"]) == 3
 
 

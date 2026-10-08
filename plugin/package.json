@@ -1,6 +1,6 @@
 {
   "name": "@lbk/dsh-satellite-thermal",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "private": true,
   "description": "卫星热建模工作台：三维、热拓扑、标准参数及远程 NX/Simcenter 运行",
   "type": "module",
@@ -32,7 +32,8 @@
       "inject": [
         "@deepseek-ai/dsh-client-connection",
         "@deepseek-ai/dsh-client-ui-conversation",
-        "@deepseek-ai/dsh-client-ui-settings-plugins"
+        "@deepseek-ai/dsh-client-ui-settings-plugins",
+        "@deepseek-ai/dsh-client-ui-sidebar-right"
       ]
     }
   },

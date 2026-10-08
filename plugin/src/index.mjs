@@ -4,6 +4,7 @@ import z from '@deepseek-ai/schemastery'
 import * as McpClient from '@deepseek-ai/dsh-mcp-client'
 import * as SkillFilesystem from '@deepseek-ai/dsh-skill-filesystem'
 import {normalizeEndpoint,json,proxyService,safeFile,staticFile} from './http.mjs'
+import {thermalContext} from './context.mjs'
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..')
 const ns = 'satellite-thermal'
@@ -23,6 +24,20 @@ export async function apply(ctx,config) {
     }
   }
   await connect()
+  ctx.inject(['systemPrompt'], scope=>{
+    scope.on('system-prompt/assemble', async(assembly, context, next)=>{
+      const sessionId=context.agent?.session?.header?.id
+      if(sessionId) {
+        try {
+          const evidence=await thermalContext(endpoint,await token(),sessionId)
+          if(evidence)assembly.contexts.push(evidence)
+        } catch {
+          assembly.contexts.push({name:'satellite-thermal-project',text:'当前会话热项目上下文暂不可用。请读取热服务确认绑定，不能沿用其他会话的项目。'})
+        }
+      }
+      return next()
+    })
+  })
   ctx.inject(['skills'],skillCtx=>skillCtx.plugin(SkillFilesystem,{providerName:ns,includeDefaultRoots:false,customSkillDirs:[path.join(root,'skills')],watch:false}))
   for(const operation of ['settings','configure','check']) {
     ctx.effect(()=>ctx.connection.fetch.register({path:`/api/${ns}/${operation}`,methods:['POST'],requestBody:'buffered',fetch:async request=>{
