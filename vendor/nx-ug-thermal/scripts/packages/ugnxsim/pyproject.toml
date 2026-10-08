@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ugnxsim"
+version = "1.0.0"
+description = "NX/UG simulation orchestration with Linux-packaged NX12 steady thermal delivery."
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+requires-python = ">=3.11"
+dependencies = []
+
+[project.optional-dependencies]
+thermal = ["meshio", "numpy"]
+structural = ["meshio", "numpy", "plotly", "pyNastran", "scipy"]
+fov = ["build123d"]
+snapshot = ["matplotlib", "numpy"]
+
+[project.scripts]
+nxcase = "ugnxsim.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["ugnxsim*"]

@@ -1,0 +1,21 @@
+{
+  "time": "2026-10-07T09:15:38.681Z",
+  "hostVersion": "0.2.0-rc.2",
+  "package": "@lbk/dsh-satellite-thermal@0.1.0",
+  "packageSha256": "85035a8894c502b857661d2400c0e4442853d2ce0cff5647386f61b45fb5a9f6",
+  "coexistingBundles": [
+    "@deepseek-ai/dsh-base",
+    "@deepseek-ai/dsh-web-app",
+    "@lbk/dsh-satellite-thermal",
+    "@lbk/dsh-satellite-geometry"
+  ],
+  "checks": [
+    "anonymous API rejected",
+    "authenticated proxy reaches service",
+    "packed HTML and all declared JS/CSS resources served",
+    "native plugin settings respond without secrets",
+    "cross-origin API rejected",
+    "current packed build installed alongside existing geometry plugin"
+  ],
+  "browserVisualVerification": false
+}

@@ -1,0 +1,252 @@
+{
+  "kind": "real-nx12-extended-validation",
+  "allPassed": true,
+  "evidence": {
+    "solid-sheet-mutual": {
+      "jobId": "2de5083384c348e48db5b088c21bb9a3",
+      "checks": {
+        "completed": true,
+        "actualTemperatureColors": true,
+        "actualTemperatureRange": true,
+        "mixedNativeElements": true,
+        "actualShellThickness": 2.0
+      },
+      "summary": {
+        "analysis_type": "steady_state",
+        "component_temperatures_K": {
+          "c-fd1af4b08f85-1": {
+            "max_K": 288.39764404296875,
+            "mean_K": 288.37687125029385,
+            "min_K": 288.359130859375,
+            "node_count": 432
+          },
+          "c-fd1af4b08f85-2": {
+            "max_K": 269.4987487792969,
+            "mean_K": 269.4945978579314,
+            "min_K": 269.491455078125,
+            "node_count": 230
+          }
+        },
+        "coordinate_unit": "mm",
+        "element_count": 1895,
+        "element_types": {
+          "TET4": 1489,
+          "TRI3": 406
+        },
+        "extraction_timings_seconds": {
+          "open_and_index_mesh": 0.7091223,
+          "read_final_temperature": 0.002459800000000012,
+          "total_before_reports": 0.7223229,
+          "write_nodes_and_vtu": 0.010740799999999995
+        },
+        "node_count": 662,
+        "point_data_array": "T",
+        "schema_version": "nx-ug-thermal-summary/1",
+        "solution_name": "steady_state_thermal",
+        "temperature_max_K": 288.39764404296875,
+        "temperature_mean_K": 281.8165647846694,
+        "temperature_min_K": 269.491455078125,
+        "temperature_unit": "K"
+      },
+      "energyBalance": {
+        "absoluteResidualW": 4.23e-05,
+        "heatFlowFromFluidSinksW": 0.0,
+        "heatFlowFromNonFluidSinksW": 0.0,
+        "heatFlowIntoSinksW": 4.0,
+        "heatLoadIntoElementsW": 4.0,
+        "heatLoadIntoSinksW": 0.0,
+        "inputComponentPowerW": 4.0,
+        "normalization": "max(abs(reported incoming heat flows and loads), abs(reported heat flow into sinks)); no sink type inferred",
+        "normalizationPowerW": 4.0,
+        "relativeResidual": 1.0575e-05,
+        "residualW": -4.23e-05,
+        "solverReportedUnit": "microW",
+        "sourceArtifact": "MSGF",
+        "status": "available"
+      }
+    },
+    "solid-sheet-independent": {
+      "jobId": "9ac24a96e0d74968bd3d0f4768c4ff8e",
+      "checks": {
+        "completed": true,
+        "actualTemperatureColors": true,
+        "actualTemperatureRange": true,
+        "mixedNativeElements": true,
+        "actualShellThickness": 2.0
+      },
+      "summary": {
+        "analysis_type": "steady_state",
+        "component_temperatures_K": {
+          "c-fd1af4b08f85-1": {
+            "max_K": 288.4783935546875,
+            "mean_K": 288.45762676662866,
+            "min_K": 288.43975830078125,
+            "node_count": 432
+          },
+          "c-fd1af4b08f85-2": {
+            "max_K": 269.4209289550781,
+            "mean_K": 269.4177884309188,
+            "min_K": 269.4154052734375,
+            "node_count": 230
+          }
+        },
+        "coordinate_unit": "mm",
+        "element_count": 1895,
+        "element_types": {
+          "TET4": 1489,
+          "TRI3": 406
+        },
+        "extraction_timings_seconds": {
+          "open_and_index_mesh": 0.6765702,
+          "read_final_temperature": 0.0023855000000000404,
+          "total_before_reports": 0.6888249000000001,
+          "write_nodes_and_vtu": 0.009869200000000022
+        },
+        "node_count": 662,
+        "point_data_array": "T",
+        "schema_version": "nx-ug-thermal-summary/1",
+        "solution_name": "steady_state_thermal",
+        "temperature_max_K": 288.4783935546875,
+        "temperature_mean_K": 281.842577193799,
+        "temperature_min_K": 269.4154052734375,
+        "temperature_unit": "K"
+      },
+      "energyBalance": {
+        "absoluteResidualW": 3.479e-06,
+        "heatFlowFromFluidSinksW": 0.0,
+        "heatFlowFromNonFluidSinksW": 0.0,
+        "heatFlowIntoSinksW": 4.0,
+        "heatLoadIntoElementsW": 4.0,
+        "heatLoadIntoSinksW": 0.0,
+        "inputComponentPowerW": 4.0,
+        "normalization": "max(abs(reported incoming heat flows and loads), abs(reported heat flow into sinks)); no sink type inferred",
+        "normalizationPowerW": 4.0,
+        "relativeResidual": 8.6975e-07,
+        "residualW": -3.479e-06,
+        "solverReportedUnit": "microW",
+        "sourceArtifact": "MSGF",
+        "status": "available"
+      }
+    },
+    "face-optics": {
+      "jobId": "cbc15532ac1f4d5a92b88e97a9d2ce93",
+      "checks": {
+        "completed": true,
+        "actualTemperatureColors": true,
+        "actualTemperatureRange": true,
+        "referenceMeanK": 267.16513195501034,
+        "faceOverridesMatched": 12,
+        "absorbedFaceFluxWm2": 40
+      },
+      "summary": {
+        "analysis_type": "steady_state",
+        "component_temperatures_K": {
+          "c-2280f09e4416-1": {
+            "max_K": 267.1869201660156,
+            "mean_K": 267.1813960759613,
+            "min_K": 267.1748046875,
+            "node_count": 1345
+          }
+        },
+        "coordinate_unit": "mm",
+        "element_count": 5685,
+        "element_types": {
+          "TET4": 5685
+        },
+        "extraction_timings_seconds": {
+          "open_and_index_mesh": 0.8082003,
+          "read_final_temperature": 0.0033552000000000026,
+          "total_before_reports": 0.847043,
+          "write_nodes_and_vtu": 0.035487500000000005
+        },
+        "node_count": 1345,
+        "point_data_array": "T",
+        "schema_version": "nx-ug-thermal-summary/1",
+        "solution_name": "steady_state_thermal",
+        "temperature_max_K": 267.1869201660156,
+        "temperature_mean_K": 267.1813960759613,
+        "temperature_min_K": 267.1748046875,
+        "temperature_unit": "K"
+      },
+      "energyBalance": {
+        "absoluteResidualW": 2.795e-05,
+        "heatFlowFromFluidSinksW": 0.0,
+        "heatFlowFromNonFluidSinksW": 0.0,
+        "heatFlowIntoSinksW": 10.4,
+        "heatLoadIntoElementsW": 10.4,
+        "heatLoadIntoSinksW": 0.0,
+        "inputComponentPowerW": 10.0,
+        "normalization": "max(abs(reported incoming heat flows and loads), abs(reported heat flow into sinks)); no sink type inferred",
+        "normalizationPowerW": 10.4,
+        "relativeResidual": 2.6874999999999997e-06,
+        "residualW": -2.795e-05,
+        "solverReportedUnit": "microW",
+        "sourceArtifact": "MSGF",
+        "status": "available"
+      }
+    },
+    "real-gearbox": {
+      "jobId": "b7af50487d584a6c9e9c4e4a32883537",
+      "checks": {
+        "completed": true,
+        "actualTemperatureColors": true,
+        "actualTemperatureRange": true,
+        "actualFaceCount": 133,
+        "maxMappingErrorMm": 5.873493861940915e-06,
+        "uniform300K": true,
+        "missionThermalValidation": false
+      },
+      "summary": {
+        "analysis_type": "steady_state",
+        "component_temperatures_K": {
+          "c-eabc4c4634b8-1": {
+            "max_K": 300.0,
+            "mean_K": 299.9999996814913,
+            "min_K": 299.9999694824219,
+            "node_count": 28840
+          }
+        },
+        "coordinate_unit": "mm",
+        "element_count": 134109,
+        "element_types": {
+          "TET4": 134109
+        },
+        "extraction_timings_seconds": {
+          "open_and_index_mesh": 6.817353799999999,
+          "read_final_temperature": 0.08345080000000049,
+          "total_before_reports": 8.4927139,
+          "write_nodes_and_vtu": 1.5919092999999993
+        },
+        "node_count": 28840,
+        "point_data_array": "T",
+        "schema_version": "nx-ug-thermal-summary/1",
+        "solution_name": "steady_state_thermal",
+        "temperature_max_K": 300.0,
+        "temperature_mean_K": 299.9999996814913,
+        "temperature_min_K": 299.9999694824219,
+        "temperature_unit": "K"
+      },
+      "energyBalance": {
+        "absoluteResidualW": 0.0003015,
+        "heatFlowFromFluidSinksW": 0.0,
+        "heatFlowFromNonFluidSinksW": 0.0019459999999999998,
+        "heatFlowIntoSinksW": 0.0016439999999999998,
+        "heatLoadIntoElementsW": 0.0,
+        "heatLoadIntoSinksW": 0.0,
+        "inputComponentPowerW": 0.0,
+        "normalization": "max(abs(reported incoming heat flows and loads), abs(reported heat flow into sinks)); no sink type inferred",
+        "normalizationPowerW": 0.0019459999999999998,
+        "relativeResidual": 0.1549331963001028,
+        "residualW": 0.0003015,
+        "solverReportedUnit": "microW",
+        "sourceArtifact": "MSGF",
+        "status": "available"
+      }
+    }
+  },
+  "notes": [
+    "Real gearbox uses artificial uniform 300 K boundary; this validates geometry and pipeline, not mission thermal conditions.",
+    "Near-zero heat flow in the uniform-temperature case makes relative energy residual ill-conditioned; absolute and relative values are both retained.",
+    "Native target group membership is covered by the final separate integration run; these earlier runs retain original artifacts."
+  ]
+}

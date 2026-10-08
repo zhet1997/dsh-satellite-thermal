@@ -1,0 +1,25 @@
+{
+  "time": "2026-10-07T16:48:56.137Z",
+  "hostVersion": "0.2.0-rc.2",
+  "hostUrl": "http://127.0.0.1:3080",
+  "profile": "C:/Users/49076/.dsh/profiles/web",
+  "package": "@lbk/dsh-satellite-thermal@0.1.0",
+  "packageSha256": "ae7a820c9c7b9c8fa13f01ab2fa7a5df0f958d7ce83fc2b29c0d4dc12f15a598",
+  "pnpmVersion": "11.19.0",
+  "pnpmPath": "C:/Users/49076/AppData/Roaming/npm/pnpm.cmd",
+  "installationMethod": "Official dsh plugin --profile web add",
+  "hostRestartRequired": false,
+  "checks": [
+    "Authenticated host proxy reaches healthy thermal service and connected NX worker",
+    "Workbench HTML and declared JS/CSS assets served",
+    "Native DSH settings and connection-check operations respond",
+    "Anonymous and cross-origin API requests rejected",
+    "Installed thermal build matches release; all previous dependency and bundle entries preserved"
+  ],
+  "solver": {
+    "configured": true,
+    "connected": true,
+    "message": "NX 执行器已连接。"
+  },
+  "browserVisualVerification": false
+}

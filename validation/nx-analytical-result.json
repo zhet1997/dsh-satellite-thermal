@@ -1,0 +1,259 @@
+{
+  "kind": "real-nx12-analytical-validation",
+  "allPassed": true,
+  "checks": [
+    {
+      "case": "conduction",
+      "quantity": "steady_heat_flow_magnitude_W",
+      "reference": "2.0",
+      "absoluteTolerance": "0.02",
+      "basis": "k*A*(Th-Tc)/L; other surfaces adiabatic",
+      "actual": 2.0,
+      "absoluteError": 0.0,
+      "passed": true
+    },
+    {
+      "case": "conduction",
+      "quantity": "mean_temperature_K",
+      "reference": "310.0",
+      "absoluteTolerance": "0.2",
+      "basis": "linear field T(x)=300+20*(x+0.05)/0.1, x in m",
+      "actual": 310.01361088344026,
+      "absoluteError": 0.013610883440264843,
+      "passed": true
+    },
+    {
+      "case": "contact",
+      "quantity": "steady_heat_flow_magnitude_W",
+      "reference": "1.3333333333333333",
+      "absoluteTolerance": "0.03",
+      "basis": "20/[0.1/(100*1e-4)+0.0005/1e-4]",
+      "actual": 1.333,
+      "absoluteError": 0.0003333333333332966,
+      "passed": true
+    },
+    {
+      "case": "contact",
+      "quantity": "left_contact_temperature_K",
+      "reference": "306.6666666666667",
+      "absoluteTolerance": "0.3",
+      "basis": "cold end plus Q*left bulk resistance",
+      "actual": 306.6665344238281,
+      "absoluteError": 0.00013224283856061447,
+      "passed": true
+    },
+    {
+      "case": "contact",
+      "quantity": "right_contact_temperature_K",
+      "reference": "313.3333333333333",
+      "absoluteTolerance": "0.3",
+      "basis": "hot end minus Q*right bulk resistance",
+      "actual": 313.3240051269531,
+      "absoluteError": 0.009328206380189386,
+      "passed": true
+    },
+    {
+      "case": "radiation",
+      "quantity": "isothermal_limit_temperature_K",
+      "reference": "246.199268873823",
+      "absoluteTolerance": "0.5",
+      "basis": "[Q/(sigma*epsilon*A)+Tspace^4]^0.25; A=0.06 m², Q=10 W, epsilon=0.8, Tspace=3 K; finite k=1000 requires small gradient",
+      "actual": 246.21387270108474,
+      "absoluteError": 0.014603827261737479,
+      "passed": true
+    },
+    {
+      "case": "radiation",
+      "quantity": "net_radiated_power_W",
+      "reference": "10.0",
+      "absoluteTolerance": "0.2",
+      "basis": "steady energy balance with zero external incident flux",
+      "actual": 10.0,
+      "absoluteError": 0.0,
+      "passed": true
+    }
+  ],
+  "evidence": {
+    "conduction": {
+      "jobId": "9c766c672f60488b81ea902fc92e700e",
+      "summary": {
+        "analysis_type": "steady_state",
+        "component_temperatures_K": {
+          "c-030df1337f94-1": {
+            "max_K": 320.0,
+            "mean_K": 310.01361088344026,
+            "min_K": 300.0,
+            "node_count": 2100
+          }
+        },
+        "coordinate_unit": "mm",
+        "element_count": 8478,
+        "element_types": {
+          "TET4": 8478
+        },
+        "extraction_timings_seconds": {
+          "open_and_index_mesh": 0.8866759000000001,
+          "read_final_temperature": 0.007593899999999931,
+          "total_before_reports": 0.9365461,
+          "write_nodes_and_vtu": 0.042276300000000044
+        },
+        "node_count": 2100,
+        "point_data_array": "T",
+        "schema_version": "nx-ug-thermal-summary/1",
+        "solution_name": "steady_state_thermal",
+        "temperature_max_K": 320.0,
+        "temperature_mean_K": 310.01361088344026,
+        "temperature_min_K": 300.0,
+        "temperature_unit": "K"
+      },
+      "solverReportedBalance": {
+        "heatFlowIntoSinksW": 2.0,
+        "heatFlowFromNonFluidSinksW": 2.0,
+        "heatLoadIntoElementsW": 0.0,
+        "heatLoadIntoSinksW": 0.0,
+        "heatFlowFromFluidSinksW": 0.0,
+        "residualW": -1.736e-05,
+        "status": "available",
+        "sourceArtifact": "MSGF",
+        "solverReportedUnit": "microW",
+        "inputComponentPowerW": 0.0,
+        "absoluteResidualW": 1.736e-05,
+        "relativeResidual": 8.68e-06,
+        "normalizationPowerW": 2.0,
+        "normalization": "max(abs(reported incoming heat flows and loads), abs(reported heat flow into sinks)); no sink type inferred"
+      },
+      "snapshotSha256": "53606292ad9c467aa0c69e8e9b0ac3ff6a92cceca395f1c604dc13b5afc8808a",
+      "msgfSha256": "283cec54a1c4ef7bbdeb0ebe826008c39fb21b4553098657feaf34b152f81407",
+      "measured": {
+        "steady_heat_flow_magnitude_W": 2.0,
+        "mean_temperature_K": 310.01361088344026,
+        "isothermal_limit_temperature_K": 310.01361088344026,
+        "net_radiated_power_W": 2.0
+      }
+    },
+    "contact": {
+      "jobId": "4dd6a48284ed4de593e12eff176bb98c",
+      "summary": {
+        "analysis_type": "steady_state",
+        "component_temperatures_K": {
+          "c-45fff0114628-1": {
+            "max_K": 306.6665344238281,
+            "mean_K": 303.3508682745017,
+            "min_K": 300.0,
+            "node_count": 1081
+          },
+          "c-45fff0114628-2": {
+            "max_K": 320.0,
+            "mean_K": 316.68468273532005,
+            "min_K": 313.3240051269531,
+            "node_count": 1085
+          }
+        },
+        "coordinate_unit": "mm",
+        "element_count": 8588,
+        "element_types": {
+          "TET4": 8588
+        },
+        "extraction_timings_seconds": {
+          "open_and_index_mesh": 0.7520649,
+          "read_final_temperature": 0.0038635000000000197,
+          "total_before_reports": 0.7982081000000001,
+          "write_nodes_and_vtu": 0.04227970000000003
+        },
+        "node_count": 2166,
+        "point_data_array": "T",
+        "schema_version": "nx-ug-thermal-summary/1",
+        "solution_name": "steady_state_thermal",
+        "temperature_max_K": 320.0,
+        "temperature_mean_K": 310.0300874296208,
+        "temperature_min_K": 300.0,
+        "temperature_unit": "K"
+      },
+      "solverReportedBalance": {
+        "heatFlowIntoSinksW": 1.333,
+        "heatFlowFromNonFluidSinksW": 1.333,
+        "heatLoadIntoElementsW": 0.0,
+        "heatLoadIntoSinksW": 0.0,
+        "heatFlowFromFluidSinksW": 0.0,
+        "residualW": -1.43e-05,
+        "status": "available",
+        "sourceArtifact": "MSGF",
+        "solverReportedUnit": "microW",
+        "inputComponentPowerW": 0.0,
+        "absoluteResidualW": 1.43e-05,
+        "relativeResidual": 1.072768192048012e-05,
+        "normalizationPowerW": 1.333,
+        "normalization": "max(abs(reported incoming heat flows and loads), abs(reported heat flow into sinks)); no sink type inferred"
+      },
+      "snapshotSha256": "71391123784e78bfa67ba71d53c021359847a46c98e3beccdb75eea2991d0141",
+      "msgfSha256": "6046066939326671c6f87f8961067ecf9267e17645400cef983d128b5c553930",
+      "actualNativeContactTargetsVerified": true,
+      "measured": {
+        "steady_heat_flow_magnitude_W": 1.333,
+        "mean_temperature_K": 310.0300874296208,
+        "isothermal_limit_temperature_K": 310.0300874296208,
+        "net_radiated_power_W": 1.333,
+        "left_contact_temperature_K": 306.6665344238281,
+        "right_contact_temperature_K": 313.3240051269531
+      }
+    },
+    "radiation": {
+      "jobId": "57005a0d30734b50946152d5fca7c0c9",
+      "summary": {
+        "analysis_type": "steady_state",
+        "component_temperatures_K": {
+          "c-2280f09e4416-1": {
+            "max_K": 246.2193603515625,
+            "mean_K": 246.21387270108474,
+            "min_K": 246.20822143554688,
+            "node_count": 1345
+          }
+        },
+        "coordinate_unit": "mm",
+        "element_count": 5685,
+        "element_types": {
+          "TET4": 5685
+        },
+        "extraction_timings_seconds": {
+          "open_and_index_mesh": 0.7912814,
+          "read_final_temperature": 0.004900200000000021,
+          "total_before_reports": 0.8236305,
+          "write_nodes_and_vtu": 0.0274489
+        },
+        "node_count": 1345,
+        "point_data_array": "T",
+        "schema_version": "nx-ug-thermal-summary/1",
+        "solution_name": "steady_state_thermal",
+        "temperature_max_K": 246.2193603515625,
+        "temperature_mean_K": 246.21387270108474,
+        "temperature_min_K": 246.20822143554688,
+        "temperature_unit": "K"
+      },
+      "solverReportedBalance": {
+        "heatFlowIntoSinksW": 10.0,
+        "heatFlowFromNonFluidSinksW": 0.0,
+        "heatLoadIntoElementsW": 10.0,
+        "heatLoadIntoSinksW": 0.0,
+        "heatFlowFromFluidSinksW": 0.0,
+        "residualW": -1.687e-05,
+        "status": "available",
+        "sourceArtifact": "MSGF",
+        "solverReportedUnit": "microW",
+        "inputComponentPowerW": 10.0,
+        "absoluteResidualW": 1.687e-05,
+        "relativeResidual": 1.687e-06,
+        "normalizationPowerW": 10.0,
+        "normalization": "max(abs(reported incoming heat flows and loads), abs(reported heat flow into sinks)); no sink type inferred"
+      },
+      "snapshotSha256": "009b68a0faed06d813edbdd28f61a44d16860d57a647c07998c1f203ec0cbd26",
+      "msgfSha256": "664981a95df38bc37028bac1ca7507252f7851fbd1ec7d4788a39a44eece0c21",
+      "measured": {
+        "steady_heat_flow_magnitude_W": 10.0,
+        "mean_temperature_K": 246.21387270108474,
+        "isothermal_limit_temperature_K": 246.21387270108474,
+        "net_radiated_power_W": 10.0
+      }
+    }
+  },
+  "note": "Original run artifacts are preserved. Generic balances are re-parsed from actual MSGF; sink heat is called radiation only in the isolated radiation-only fixture."
+}

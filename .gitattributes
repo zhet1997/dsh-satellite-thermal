@@ -1,0 +1,5 @@
+* text=auto eol=lf
+# Preserve the captured upstream bytes identified by source manifests.
+vendor/** -text
+nx-worker/thermal_executor/journals/vendor/** -text
+service/vendor/compute_heat_flux.py -text

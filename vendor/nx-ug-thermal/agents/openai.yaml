@@ -1,0 +1,4 @@
+interface:
+  display_name: "NX/UG Thermal"
+  short_description: "Build and validate NX/UG thermal simulations."
+  default_prompt: "Use $nx-ug-thermal to build a steady NX thermal case from component STEP files and publish the verified results."

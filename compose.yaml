@@ -1,0 +1,20 @@
+name: dsh-satellite-thermal
+services:
+  thermal:
+    build: ./service
+    image: dsh-satellite-thermal-service:0.1.1
+    ports:
+      - "${THERMAL_BIND_ADDRESS:-127.0.0.1}:${THERMAL_PORT:-8790}:8790"
+    volumes:
+      - thermal-projects:/data
+    environment:
+      THERMAL_DATA_DIR: /data
+      THERMAL_SERVICE_TOKEN: ${THERMAL_SERVICE_TOKEN:-}
+      THERMAL_NX_WORKER_URL: ${THERMAL_NX_WORKER_URL:-}
+      THERMAL_NX_WORKER_TOKEN: ${THERMAL_NX_WORKER_TOKEN:-}
+      THERMAL_GEOMETRY_TIMEOUT_SECONDS: ${THERMAL_GEOMETRY_TIMEOUT_SECONDS:-300}
+    restart: unless-stopped
+    init: true
+    stop_grace_period: 30s
+volumes:
+  thermal-projects:

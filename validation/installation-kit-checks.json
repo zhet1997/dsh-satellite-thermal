@@ -1,0 +1,17 @@
+{
+  "date": "2026-10-08",
+  "package": "dsh-thermal-web-0.1.0-installation.zip",
+  "dshVersion": "0.2.0-rc.2",
+  "checks": {
+    "officialDshLocalTgzSyntaxVerified": true,
+    "pluginManagerUsesServerPathTextInput": true,
+    "actualSettingsMenuIsBuiltInPlugins": true,
+    "existingWebProfileInstallerPreflight": true,
+    "windowsPowerShell5WorkerPreflight": true,
+    "windowsPowerShell5WslServicePreflight": true,
+    "archiveCrcAndAllFileSha256Verified": true,
+    "currentWebProfileModified": false,
+    "serviceOrNxStartedByPreflight": false
+  },
+  "note": "Installer scripts were verified from the ready-to-use kit directory using -CheckOnly. First-run dependency installation may require network access. This packaging update changes documentation and deployment helpers; the plugin executable code and NX worker wheel are unchanged."
+}

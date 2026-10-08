@@ -1,0 +1,24 @@
+{
+  "origin": "ssh work-server-5090-ali:/data/lbk/codex_web/agent-web/workflow_agents/thermal_skills/nx-ug-thermal/scripts/windows/journals",
+  "capturedAt": "2026-10-07",
+  "upstreamHead": "2b31f95f21ff0010ced4a63184e0e79a9343d3d6",
+  "sourceState": "current working directory copied read-only by root agent, including uncommitted content; HEAD alone does not identify this snapshot",
+  "files": [
+    {
+      "path": "thermal_executor/journals/vendor/build_and_solve.py",
+      "sha256": "b72acaa14c3b896de44ed3844b528bce557b5bd460948b89d54f16400f9e892e",
+      "size": 43670
+    },
+    {
+      "path": "thermal_executor/journals/vendor/build_geometry_master.py",
+      "sha256": "49ee5185c0c575ef72370f7a5c338f9120b729cc4f770eec8aa1c0e4ad0c8036",
+      "size": 20687
+    },
+    {
+      "path": "thermal_executor/journals/vendor/extract_results.py",
+      "sha256": "98a95631400837ec9ff7bc03a4d42fda13fe6178ad1e55b2afdc50bc749f5a16",
+      "size": 17658
+    }
+  ],
+  "adaptation": "Original journals retained byte-for-byte. pipeline.py imports functions for geometry,FEM,SIM,TET4 and extraction; new shell/optical/radiation descriptors checked by NX12 runtime probes."
+}

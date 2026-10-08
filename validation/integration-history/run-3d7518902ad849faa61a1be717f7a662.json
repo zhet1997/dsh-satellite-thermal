@@ -1,0 +1,866 @@
+{
+  "schemaVersion": "1.0",
+  "preparedAt": "2026-10-07T08:58:39.556071+00:00",
+  "status": "completed",
+  "projectId": "p-95c73108ecd0457f8097ce3b76d18adb",
+  "revision": 3,
+  "caseId": "case-benchmark",
+  "inputHash": "b81489b472741c9143a34f2194cab739802d33e098b08314187e88006df6a1e5",
+  "geometrySha256": "030df1337f943363aeafe36ce7c3b76bf36b7e5dbd2a66768406f416b9d08929",
+  "message": "真实 service→worker→NX→回读/结果/工件/ZIP 链路通过；导热温度、2 W 热流及能量平衡对照通过。",
+  "expected": {
+    "minK": 300.0,
+    "maxK": 320.0,
+    "meanK": 310.0,
+    "meanToleranceK": 0.2,
+    "heatFlowW": 2.0,
+    "heatFlowToleranceW": 0.02
+  },
+  "checks": {
+    "componentIdsMatch": true,
+    "faceIdsMatch": true,
+    "boundsPresent": true,
+    "autoRunDisabled": true,
+    "noPrematureRuns": true,
+    "realNXSource": true,
+    "temperatureReferencePassed": true,
+    "readbackPresent": true,
+    "immutableInputHashMatched": true,
+    "artifactDownloadsVerified": true,
+    "exportManifestCompleted": true,
+    "safeExportEntries": true,
+    "actualMaterialReadbackMatched": true,
+    "actualBoundaryTargetsAndValuesMatched": true,
+    "actualMeshPresent": true,
+    "faceMappingExact": true,
+    "heatFlowReferencePassed": true,
+    "energyBalancePassed": true
+  },
+  "submittedAt": "2026-10-07T09:03:25.286201+00:00",
+  "lastCheckedAt": "2026-10-07T09:05:16.282212+00:00",
+  "stage": "completed",
+  "priorAttempts": [
+    {
+      "runId": "run-320b6a95759c4f6990bd7c057d6a4b3b",
+      "status": "failed",
+      "message": "NX 返回的数据不符合执行契约，未标记为求解完成。",
+      "events": [
+        {
+          "time": "2026-10-07T08:59:04.766871+00:00",
+          "stage": "queued",
+          "message": "输入快照已保存，后续编辑不会覆盖本次运行。"
+        },
+        {
+          "time": "2026-10-07T08:59:06.324015+00:00",
+          "stage": "preparing",
+          "message": "正在传送冻结输入和 STEP 到 NX 执行器。"
+        },
+        {
+          "time": "2026-10-07T08:59:06.457602+00:00",
+          "stage": "queued",
+          "message": "Frozen input accepted"
+        },
+        {
+          "time": "2026-10-07T08:59:08.551309+00:00",
+          "stage": "import",
+          "message": "NX import"
+        },
+        {
+          "time": "2026-10-07T08:59:15.914794+00:00",
+          "stage": "failed",
+          "message": "NX 返回的数据不符合执行契约，未标记为求解完成。"
+        }
+      ],
+      "submittedAt": "2026-10-07T08:59:04.819565+00:00",
+      "lastCheckedAt": "2026-10-07T08:59:38.412331+00:00"
+    }
+  ],
+  "runId": "run-3d7518902ad849faa61a1be717f7a662",
+  "events": [
+    {
+      "time": "2026-10-07T09:03:25.257275+00:00",
+      "stage": "queued",
+      "message": "输入快照已保存，后续编辑不会覆盖本次运行。"
+    },
+    {
+      "time": "2026-10-07T09:03:25.314852+00:00",
+      "stage": "preparing",
+      "message": "正在传送冻结输入和 STEP 到 NX 执行器。"
+    },
+    {
+      "time": "2026-10-07T09:03:25.439956+00:00",
+      "stage": "queued",
+      "message": "Frozen input accepted"
+    },
+    {
+      "time": "2026-10-07T09:03:27.532227+00:00",
+      "stage": "import",
+      "message": "NX import"
+    },
+    {
+      "time": "2026-10-07T09:03:31.682911+00:00",
+      "stage": "model",
+      "message": "NX model"
+    },
+    {
+      "time": "2026-10-07T09:03:37.899638+00:00",
+      "stage": "readback",
+      "message": "NX readback"
+    },
+    {
+      "time": "2026-10-07T09:03:40.048960+00:00",
+      "stage": "solve",
+      "message": "NX solve"
+    },
+    {
+      "time": "2026-10-07T09:04:05.479439+00:00",
+      "stage": "extract",
+      "message": "NX extract"
+    },
+    {
+      "time": "2026-10-07T09:04:09.749616+00:00",
+      "stage": "completed",
+      "message": "NX steady-state outputs and component temperatures extracted"
+    }
+  ],
+  "actual": {
+    "components": [
+      {
+        "id": "c-030df1337f94-1",
+        "maxK": 320.0,
+        "meanK": 310.01361088344026,
+        "minK": 300.0
+      }
+    ],
+    "energyBalance": {
+      "absoluteResidualW": 1.736e-05,
+      "heatFlowFromFluidSinksW": 0.0,
+      "heatFlowFromNonFluidSinksW": 2.0,
+      "heatFlowIntoSinksW": 2.0,
+      "heatLoadIntoElementsW": 0.0,
+      "heatLoadIntoSinksW": 0.0,
+      "inputComponentPowerW": 0.0,
+      "normalization": "max(abs(reported incoming heat flows and loads), abs(reported heat flow into sinks)); no sink type inferred",
+      "normalizationPowerW": 2.0,
+      "relativeResidual": 8.68e-06,
+      "residualW": -1.736e-05,
+      "solverReportedUnit": "microW",
+      "sourceArtifact": "MSGF",
+      "status": "available"
+    },
+    "readback": {
+      "checks": {
+        "solverExecuted": false,
+        "status": "readback-complete"
+      },
+      "components": [
+        {
+          "collectorProperties": [
+            {
+              "name": "material",
+              "type": "10"
+            },
+            {
+              "GetBooleanPropertyValue": true,
+              "name": "radiation",
+              "type": "2"
+            },
+            {
+              "name": "optical properties",
+              "referencedTable": {
+                "name": "OPT_c_030df1337f94_1",
+                "properties": [
+                  {
+                    "name": "description",
+                    "type": "0"
+                  },
+                  {
+                    "GetBaseScalarWithDataPropertyValue": [
+                      0.8,
+                      null
+                    ],
+                    "GetDoublePropertyValue": 0.8,
+                    "GetScalarWithDataPropertyValue": [
+                      0.8,
+                      null
+                    ],
+                    "name": "emissivity",
+                    "type": "6"
+                  }
+                ]
+              },
+              "type": "0"
+            }
+          ],
+          "conductivity": 100.0,
+          "density": 2700.0,
+          "emissivity": 0.8,
+          "id": "c-030df1337f94-1",
+          "inputComparison": "matched",
+          "kind": "solid",
+          "materialName": "MAT_c_030df1337f94_1",
+          "materialProperties": [
+            {
+              "GetBaseScalarWithDataPropertyValue": [
+                2700.0,
+                "KilogramPerCubicMeter"
+              ],
+              "GetDoublePropertyValue": 2.7e-06,
+              "GetScalarWithDataPropertyValue": [
+                2700.0,
+                "KilogramPerCubicMeter"
+              ],
+              "name": "MassDensity",
+              "type": "6"
+            },
+            {
+              "GetBaseScalarWithDataPropertyValue": [
+                100.0,
+                "ThermalConductivity_Metric3"
+              ],
+              "GetDoublePropertyValue": 100000.0,
+              "GetScalarWithDataPropertyValue": [
+                100.0,
+                "ThermalConductivity_Metric3"
+              ],
+              "name": "ThermalConductivity",
+              "type": "6"
+            },
+            {
+              "GetBaseScalarWithDataPropertyValue": [
+                900.0,
+                "SpecificHeat_Metric2"
+              ],
+              "GetDoublePropertyValue": 900000000.0,
+              "GetScalarWithDataPropertyValue": [
+                900.0,
+                "SpecificHeat_Metric2"
+              ],
+              "name": "SpecificHeat",
+              "type": "6"
+            }
+          ],
+          "meshTag": 26853,
+          "source": "NX reopened FEM",
+          "specificHeat": 900.0
+        }
+      ],
+      "conditions": [
+        {
+          "inputId": "initial",
+          "kind": "initial",
+          "name": "INITIAL_TEMPERATURE",
+          "properties": [
+            {
+              "name": "description",
+              "type": "0"
+            },
+            {
+              "GetBooleanPropertyValue": false,
+              "name": "Override Region",
+              "type": "2"
+            },
+            {
+              "name": "Non-Geometric Element",
+              "type": "0"
+            },
+            {
+              "GetBaseScalarWithDataPropertyValue": [
+                36.85000000000002,
+                "Celsius"
+              ],
+              "GetDoublePropertyValue": 36.85000000000002,
+              "GetScalarWithDataPropertyValue": [
+                36.85000000000002,
+                "Celsius"
+              ],
+              "name": "Temperature",
+              "type": "4"
+            },
+            {
+              "GetIntegerPropertyValue": 5,
+              "name": "distributionType",
+              "type": "3"
+            }
+          ],
+          "source": "NX reopened SIM",
+          "tag": 49454,
+          "targets": []
+        },
+        {
+          "inputId": "cold-end",
+          "kind": "temperature",
+          "name": "TEMP_cold_endc_030df1337f94_1_f1",
+          "properties": [
+            {
+              "name": "description",
+              "type": "0"
+            },
+            {
+              "GetIntegerPropertyValue": 0,
+              "name": "Option",
+              "type": "3"
+            },
+            {
+              "GetBaseScalarWithDataPropertyValue": [
+                300.0,
+                "Kelvin"
+              ],
+              "GetDoublePropertyValue": 26.850000000000023,
+              "GetScalarWithDataPropertyValue": [
+                300.0,
+                "Kelvin"
+              ],
+              "name": "Temperature",
+              "type": "6"
+            },
+            {
+              "name": "Temperature File",
+              "type": "0"
+            },
+            {
+              "name": "Results Directory",
+              "type": "1"
+            },
+            {
+              "GetBooleanPropertyValue": false,
+              "name": "Specify Layer to Apply to",
+              "type": "2"
+            },
+            {
+              "GetIntegerPropertyValue": 0,
+              "name": "Apply to",
+              "type": "3"
+            },
+            {
+              "GetIntegerPropertyValue": 1,
+              "name": "Layer Number",
+              "type": "3"
+            },
+            {
+              "GetIntegerPropertyValue": 32,
+              "name": "distributionType",
+              "type": "3"
+            }
+          ],
+          "source": "NX reopened SIM",
+          "tag": 49457,
+          "targets": [
+            {
+              "componentId": "c-030df1337f94-1",
+              "faceId": "c-030df1337f94-1:f1"
+            }
+          ]
+        },
+        {
+          "inputId": "hot-end",
+          "kind": "temperature",
+          "name": "TEMP_hot_endc_030df1337f94_1_f2",
+          "properties": [
+            {
+              "name": "description",
+              "type": "0"
+            },
+            {
+              "GetIntegerPropertyValue": 0,
+              "name": "Option",
+              "type": "3"
+            },
+            {
+              "GetBaseScalarWithDataPropertyValue": [
+                320.0,
+                "Kelvin"
+              ],
+              "GetDoublePropertyValue": 46.85000000000002,
+              "GetScalarWithDataPropertyValue": [
+                320.0,
+                "Kelvin"
+              ],
+              "name": "Temperature",
+              "type": "6"
+            },
+            {
+              "name": "Temperature File",
+              "type": "0"
+            },
+            {
+              "name": "Results Directory",
+              "type": "1"
+            },
+            {
+              "GetBooleanPropertyValue": false,
+              "name": "Specify Layer to Apply to",
+              "type": "2"
+            },
+            {
+              "GetIntegerPropertyValue": 0,
+              "name": "Apply to",
+              "type": "3"
+            },
+            {
+              "GetIntegerPropertyValue": 1,
+              "name": "Layer Number",
+              "type": "3"
+            },
+            {
+              "GetIntegerPropertyValue": 32,
+              "name": "distributionType",
+              "type": "3"
+            }
+          ],
+          "source": "NX reopened SIM",
+          "tag": 49460,
+          "targets": [
+            {
+              "componentId": "c-030df1337f94-1",
+              "faceId": "c-030df1337f94-1:f2"
+            }
+          ]
+        }
+      ],
+      "faces": [
+        {
+          "boundsMm": [
+            -50.0,
+            -5.0,
+            -5.0,
+            -50.0,
+            5.0,
+            5.0
+          ],
+          "componentId": "c-030df1337f94-1",
+          "id": "c-030df1337f94-1:f1",
+          "mappingErrorMm": 0.0,
+          "tag": 26921
+        },
+        {
+          "boundsMm": [
+            50.0,
+            -5.0,
+            -5.0,
+            50.0,
+            5.0,
+            5.0
+          ],
+          "componentId": "c-030df1337f94-1",
+          "id": "c-030df1337f94-1:f2",
+          "mappingErrorMm": 0.0,
+          "tag": 26926
+        },
+        {
+          "boundsMm": [
+            -50.0,
+            -5.0,
+            -5.0,
+            50.0,
+            -5.0,
+            5.0
+          ],
+          "componentId": "c-030df1337f94-1",
+          "id": "c-030df1337f94-1:f3",
+          "mappingErrorMm": 0.0,
+          "tag": 26925
+        },
+        {
+          "boundsMm": [
+            -50.0,
+            5.0,
+            -5.0,
+            50.0,
+            5.0,
+            5.0
+          ],
+          "componentId": "c-030df1337f94-1",
+          "id": "c-030df1337f94-1:f4",
+          "mappingErrorMm": 0.0,
+          "tag": 26924
+        },
+        {
+          "boundsMm": [
+            -50.0,
+            -5.0,
+            -5.0,
+            50.0,
+            5.0,
+            -5.0
+          ],
+          "componentId": "c-030df1337f94-1",
+          "id": "c-030df1337f94-1:f5",
+          "mappingErrorMm": 0.0,
+          "tag": 26923
+        },
+        {
+          "boundsMm": [
+            -50.0,
+            -5.0,
+            5.0,
+            50.0,
+            5.0,
+            5.0
+          ],
+          "componentId": "c-030df1337f94-1",
+          "id": "c-030df1337f94-1:f6",
+          "mappingErrorMm": 0.0,
+          "tag": 26922
+        }
+      ],
+      "mesh": {
+        "components": [
+          {
+            "collectorName": "MC_c_030df1337f94_1",
+            "componentId": "c-030df1337f94-1",
+            "elementCount": 8478,
+            "kind": "solid",
+            "meshName": "MESH_c_030df1337f94_1",
+            "meshTag": 26853,
+            "nodeCount": 2100,
+            "sizeMm": 2.0,
+            "thicknessMm": 0.0
+          }
+        ],
+        "elementCount": 8478,
+        "nodeCount": 2100,
+        "source": "NX UF finite-element mesh",
+        "volumeMm3": {
+          "c-030df1337f94-1": 9999.999999999987
+        }
+      },
+      "meshArtifact": "mesh.glb",
+      "source": "nx",
+      "meshUrl": "/api/projects/p-95c73108ecd0457f8097ce3b76d18adb/artifacts/a-5e0bad3487234dd1877e4e6256080e85"
+    },
+    "artifacts": [
+      {
+        "name": "mesh.glb",
+        "size": 95364,
+        "sha256": "b34c8f64f77b25f34daf987aa97a89d8727c334209f9612850e1bf554ecd202d",
+        "mediaType": "application/octet-stream"
+      },
+      {
+        "name": "binding.json",
+        "size": 1913,
+        "sha256": "3f71d80c150ec7ce4cc1414d0ddee86d4e9044d001f66962c079194b99d5f7bc",
+        "mediaType": "application/octet-stream"
+      },
+      {
+        "name": "case.fem",
+        "size": 1189438,
+        "sha256": "49417e714dc3c6df137f1c90a28dd0076cbedf516dffbba3bb1a3f42277d0482",
+        "mediaType": "application/octet-stream"
+      },
+      {
+        "name": "geometry_master.prt",
+        "size": 54020,
+        "sha256": "2eaa4bc24fb7bf53b02980f53246d17c58922489faddb57824fa2a82ed6de245",
+        "mediaType": "application/octet-stream"
+      },
+      {
+        "name": "imported_geometry.log",
+        "size": 5144,
+        "sha256": "00217ad29f67c1dbe79f866e8062521bc532508eed9f6eac18a2445bcd465194",
+        "mediaType": "application/octet-stream"
+      },
+      {
+        "name": "imported_geometry.prt",
+        "size": 67493,
+        "sha256": "0ccc1d7ec57a620c01e42fbf2f0aaf92d87285dbfc5b07c9f011d6be62fedb04",
+        "mediaType": "application/octet-stream"
+      },
+      {
+        "name": "model-report.json",
+        "size": 4800,
+        "sha256": "071d5c468bdef277db1d9d481b5b450b636854f09974bc7be5edca9ca6f2ae15",
+        "mediaType": "application/octet-stream"
+      },
+      {
+        "name": "MSGF",
+        "size": 3095,
+        "sha256": "4c2a834c7844fce621a1cadd8947bc50fbd85c18187d4fea93c43c19779a1a82",
+        "mediaType": "application/octet-stream"
+      },
+      {
+        "name": "solve_report.json",
+        "size": 4700,
+        "sha256": "9ff664c82b8d0e6c74f6cac9c87ec057d1ada078459f727ce114aa7d57ea86be",
+        "mediaType": "application/octet-stream"
+      },
+      {
+        "name": "thermal-case.json",
+        "size": 28,
+        "sha256": "b7dd421ab7d1eb81cf7e7d09e6715cb3a4d4e0213f0c2d2fa69aee4cbe77bdb8",
+        "mediaType": "application/octet-stream"
+      },
+      {
+        "name": "thermal_case-steady_state_thermal.bun",
+        "size": 760652,
+        "sha256": "55b1e09c218dba1fdd1f24b68d5c2a77d6ec5025f81f3520f818666bf7349dfc",
+        "mediaType": "application/octet-stream"
+      },
+      {
+        "name": "thermal_case-steady_state_thermal.log",
+        "size": 12838,
+        "sha256": "f03f6a8a0b6058de4291d5e7da714f11c6a0b8b702d78ac8403fd1dc2208bafb",
+        "mediaType": "application/octet-stream"
+      },
+      {
+        "name": "thermal_case.sim",
+        "size": 2223879,
+        "sha256": "2812997fafc979ab468fc40a86b7de7dcae56b10876bdf103fa2961e46afc8e6",
+        "mediaType": "application/octet-stream"
+      },
+      {
+        "name": "energy_balance.json",
+        "size": 477,
+        "sha256": "fc3c32ee31ce0f925cb084e5b3d5683144db465d6bbfb6f8f379861d9765a43b",
+        "mediaType": "application/octet-stream"
+      },
+      {
+        "name": "native.vtu",
+        "size": 357083,
+        "sha256": "c7b93a6c32229abf55535d428d832842e1bc23bf1f6ecff6019a4f84231cb447",
+        "mediaType": "application/octet-stream"
+      },
+      {
+        "name": "readback.json",
+        "size": 8931,
+        "sha256": "c2158e1d0bd016cb77e0d0a6fa5d29258b6c15b916c3edb1409d998908d1c19c",
+        "mediaType": "application/octet-stream"
+      },
+      {
+        "name": "solver-log-summary.txt",
+        "size": 892,
+        "sha256": "dd950673e79ac48a449b03f7cadaac4c6850a4514dadd3b0546f147c6031fdf4",
+        "mediaType": "application/octet-stream"
+      },
+      {
+        "name": "summary.json",
+        "size": 839,
+        "sha256": "ee80936a2111ecd6ce014b25aeac742faa1a705cd51f501b3a64c60bdc0e68ed",
+        "mediaType": "application/octet-stream"
+      },
+      {
+        "name": "temperature.glb",
+        "size": 188864,
+        "sha256": "18391d422b3cb8efc7b23ed8ea422c435bcffc04167bdc8f9b1c4425ca3b322d",
+        "mediaType": "application/octet-stream"
+      },
+      {
+        "name": "elements.csv",
+        "size": 414553,
+        "sha256": "0881ca203cf895ce2ae61dd1b0a73616a34fd34d280577bc9558d3b5a552c40a",
+        "mediaType": "application/octet-stream"
+      },
+      {
+        "name": "nodes.csv",
+        "size": 184229,
+        "sha256": "a347b5d3176e3b12c354460ad158036d0628b3803614f222d90345c29095286f",
+        "mediaType": "application/octet-stream"
+      },
+      {
+        "name": "nodes_geometry.csv",
+        "size": 148913,
+        "sha256": "df68af6c920e24ffc096b5d9a4ac45e97dfaf18c8301982a261f523767bdabbc",
+        "mediaType": "application/octet-stream"
+      },
+      {
+        "name": "extract.stderr.log",
+        "size": 187,
+        "sha256": "2e7fae9fecb1917541335d0aba2eceb1f146a3b84a3a670e40a1c65a7098433c",
+        "mediaType": "application/octet-stream"
+      },
+      {
+        "name": "extract.stdout.log",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "mediaType": "application/octet-stream"
+      },
+      {
+        "name": "import.stderr.log",
+        "size": 187,
+        "sha256": "2e7fae9fecb1917541335d0aba2eceb1f146a3b84a3a670e40a1c65a7098433c",
+        "mediaType": "application/octet-stream"
+      },
+      {
+        "name": "import.stdout.log",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "mediaType": "application/octet-stream"
+      },
+      {
+        "name": "model.stderr.log",
+        "size": 187,
+        "sha256": "2e7fae9fecb1917541335d0aba2eceb1f146a3b84a3a670e40a1c65a7098433c",
+        "mediaType": "application/octet-stream"
+      },
+      {
+        "name": "model.stdout.log",
+        "size": 114,
+        "sha256": "c271ddf0163a4037e0261083e7c6b9a59398d214f130c8a76503408b34e0b55a",
+        "mediaType": "application/octet-stream"
+      },
+      {
+        "name": "readback.stderr.log",
+        "size": 187,
+        "sha256": "2e7fae9fecb1917541335d0aba2eceb1f146a3b84a3a670e40a1c65a7098433c",
+        "mediaType": "application/octet-stream"
+      },
+      {
+        "name": "readback.stdout.log",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "mediaType": "application/octet-stream"
+      },
+      {
+        "name": "solve.stderr.log",
+        "size": 187,
+        "sha256": "2e7fae9fecb1917541335d0aba2eceb1f146a3b84a3a670e40a1c65a7098433c",
+        "mediaType": "application/octet-stream"
+      },
+      {
+        "name": "solve.stdout.log",
+        "size": 2394,
+        "sha256": "74632cbf0e9136bcd58424aee274ba6eb8d50bfc1bff95f9674bb8716fa6eca2",
+        "mediaType": "application/octet-stream"
+      },
+      {
+        "name": "journal-manifest.json",
+        "size": 616,
+        "sha256": "853913fc0d805c0231ae1f02e83d86aafb86417f521db8797aee8f94fdb2dda1",
+        "mediaType": "application/octet-stream"
+      },
+      {
+        "name": "manifest.json",
+        "size": 302,
+        "sha256": "00513adc41ef941540ede624be07032989a6d0a145fde62bdc5878d1d9b7cae3",
+        "mediaType": "application/octet-stream"
+      },
+      {
+        "name": "snapshot.json",
+        "size": 8969,
+        "sha256": "b2a49367569459d4a06b48f01f839ba0b91bff0ff01055324e302109849246f3",
+        "mediaType": "application/octet-stream"
+      },
+      {
+        "name": "extract-result.json",
+        "size": 818,
+        "sha256": "8f3080217bade248df4dec606a24fb87ea7518bbff6709ee33452928eb41e367",
+        "mediaType": "application/octet-stream"
+      },
+      {
+        "name": "extract-task.json",
+        "size": 1523,
+        "sha256": "29b2c06f1b9e9f2bee8953cd62d5c48f199e7054a1802f5bd15618b9f675132c",
+        "mediaType": "application/octet-stream"
+      },
+      {
+        "name": "extract.json",
+        "size": 101,
+        "sha256": "47358506dc8a7f3189574b61eb3f86c83456067e022c699daf991b86425064ad",
+        "mediaType": "application/octet-stream"
+      },
+      {
+        "name": "import-result.json",
+        "size": 2179,
+        "sha256": "d8e9eb70ccd750b1eb1be494a9f8b36f02d4dfe4381ca470bb9049fc4d7cc0d8",
+        "mediaType": "application/octet-stream"
+      },
+      {
+        "name": "import-task.json",
+        "size": 1521,
+        "sha256": "ad344c4566acbfdcc9c33597b4171725a5efffef00b23bcb9857e9b2fab9ce94",
+        "mediaType": "application/octet-stream"
+      },
+      {
+        "name": "import.json",
+        "size": 100,
+        "sha256": "ec6f4919f2285565b88b799f52113b77e1600f0c127e9b35f24b59851df25cde",
+        "mediaType": "application/octet-stream"
+      },
+      {
+        "name": "model-result.json",
+        "size": 5206,
+        "sha256": "d8844fa407d57d3a53a4a4f64b795a472063a55d9219007b0286eeb6272f7723",
+        "mediaType": "application/octet-stream"
+      },
+      {
+        "name": "model-task.json",
+        "size": 1519,
+        "sha256": "77fcbb92630c2bfbbc129f1fcc3965fdcd4676d90db14199f3adda82d14e55b9",
+        "mediaType": "application/octet-stream"
+      },
+      {
+        "name": "model.json",
+        "size": 99,
+        "sha256": "fb7f5c268e420d9bedac31f1ec0e4aefc4b6d9060effa8eaacfd6c16351c184a",
+        "mediaType": "application/octet-stream"
+      },
+      {
+        "name": "processes.json",
+        "size": 1340,
+        "sha256": "af463fe7594a5ca03853c0adecce50b2b396f6397f39f302027092489a8cc37c",
+        "mediaType": "application/octet-stream"
+      },
+      {
+        "name": "readback-result.json",
+        "size": 9747,
+        "sha256": "bc39e1e53122f0cf3f4e7c1aad3c542ffe97de7684251a3b93becd7be008f5c2",
+        "mediaType": "application/octet-stream"
+      },
+      {
+        "name": "readback-task.json",
+        "size": 1525,
+        "sha256": "57771fae1d9e794ceeb9b36f7c51119452a6ac046d6122dcb4d42acfae5ebc04",
+        "mediaType": "application/octet-stream"
+      },
+      {
+        "name": "stages__readback.json",
+        "size": 102,
+        "sha256": "b2d47f06b6ba5398f5b30a2b5196b03471e8f78fa22c290678bd4bfea66a7533",
+        "mediaType": "application/octet-stream"
+      },
+      {
+        "name": "solve-result.json",
+        "size": 5119,
+        "sha256": "394c882f298d393e6733be5fe02f3bbdc241f04ea74a9320274f88d741f8097f",
+        "mediaType": "application/octet-stream"
+      },
+      {
+        "name": "solve-task.json",
+        "size": 1519,
+        "sha256": "30824d7a4c43eded412e18865ea0fc37440d85363f209cea5fe2e2611352b2aa",
+        "mediaType": "application/octet-stream"
+      },
+      {
+        "name": "solve.json",
+        "size": 99,
+        "sha256": "39a5c9df751236f8b52499016674caaf86faa0464f66b02f8cc0a66e9e5bd94a",
+        "mediaType": "application/octet-stream"
+      }
+    ],
+    "export": {
+      "bytes": 1608075,
+      "sha256": "12d110d907a7ce2447336cd2278d2d10623a45e3d7fd00025ab3b6baf4702cec",
+      "manifest": {
+        "schemaVersion": "1.0",
+        "createdAt": "2026-10-07T09:05:18.835746+00:00",
+        "projectId": "p-95c73108ecd0457f8097ce3b76d18adb",
+        "revision": 3,
+        "nxExecution": "completed",
+        "notice": "源 STEP 预览不等于 NX 回读；仅含真实生成的文件。未完成求解时不含虚构温度。",
+        "runs": [
+          {
+            "id": "run-320b6a95759c4f6990bd7c057d6a4b3b",
+            "revision": 3,
+            "status": "failed"
+          },
+          {
+            "id": "run-3d7518902ad849faa61a1be717f7a662",
+            "revision": 3,
+            "status": "completed"
+          }
+        ]
+      }
+    }
+  },
+  "completedAt": "2026-10-07T09:05:20.021824+00:00"
+}

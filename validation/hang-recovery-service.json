@@ -1,0 +1,35 @@
+{
+  "version": "0.1.1",
+  "checks": [
+    {
+      "operation": "health",
+      "ms": 141
+    },
+    {
+      "operation": "create",
+      "ms": 47
+    },
+    {
+      "operation": "read",
+      "ms": 16
+    },
+    {
+      "operation": "list",
+      "ms": 94
+    }
+  ],
+  "existingProjectsPreserved": true,
+  "verificationProjectRemoved": true,
+  "existingProjectStates": [
+    {
+      "id": "p-ee8260a3eab940db8605854099037524",
+      "geometry": "error",
+      "runCount": 0
+    },
+    {
+      "id": "p-be4f30881c0140a88bde842f3eb06758",
+      "geometry": "ready",
+      "runCount": 5
+    }
+  ]
+}
