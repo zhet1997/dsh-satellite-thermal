@@ -1,15 +1,15 @@
 [
   {
-    "id": "@lbk/dsh-satellite-thermal@0.1.1",
+    "id": "@lbk/dsh-satellite-thermal@0.2.0",
     "name": "@lbk/dsh-satellite-thermal",
-    "version": "0.1.1",
-    "filename": "lbk-dsh-satellite-thermal-0.1.1.tgz",
-    "size": 321707,
-    "unpackedSize": 1138682,
+    "version": "0.2.0",
+    "filename": "lbk-dsh-satellite-thermal-0.2.0.tgz",
+    "size": 322695,
+    "unpackedSize": 1144085,
     "files": [
       {
-        "path": "public/assets/index-87UzVDYZ.css",
-        "size": 71290
+        "path": "public/assets/index-Q9m4pmx4.css",
+        "size": 83455
       },
       {
         "path": "public/index.html",
@@ -17,15 +17,15 @@
       },
       {
         "path": "lib/client.js",
-        "size": 8653
+        "size": 8381
       },
       {
         "path": "public/assets/graph-WYJUp5Dt.js",
         "size": 329177
       },
       {
-        "path": "public/assets/index-DiR7yaRc.js",
-        "size": 178067
+        "path": "public/assets/index-CnIhDNtI.js",
+        "size": 167913
       },
       {
         "path": "public/assets/three-BFZRcxmq.js",
@@ -33,11 +33,11 @@
       },
       {
         "path": "package.json",
-        "size": 1295
+        "size": 1348
       },
       {
         "path": "src/client.jsx",
-        "size": 4615
+        "size": 4659
       },
       {
         "path": "README.md",
@@ -45,7 +45,11 @@
       },
       {
         "path": "skills/satellite-thermal/SKILL.md",
-        "size": 2464
+        "size": 3226
+      },
+      {
+        "path": "src/context.mjs",
+        "size": 968
       },
       {
         "path": "src/http.mjs",
@@ -53,7 +57,7 @@
       },
       {
         "path": "src/index.mjs",
-        "size": 4281
+        "size": 4926
       },
       {
         "path": "install-profile.mjs",
@@ -61,15 +65,15 @@
       },
       {
         "path": "mcp/server.mjs",
-        "size": 6650
+        "size": 7842
       },
       {
         "path": "cordis.patch.yml",
         "size": 79
       }
     ],
-    "shasum": "0f88eae3216f573a853d6de3c5e665d69b1d8ed6",
-    "sha256": "5166c8f6f66553392bcb8fe4ec3eba6d8145f1126667865de1cda9bfeefa71b1",
-    "integrity": "sha512-1yJunNczKr4nwFAm0CqqgFFTWcNgOq+Z4Bof9RyqJq+1zdzJ4AW8lLk8XGvWERuiBDn5Q0OuVScxSPqIYRe0Jg=="
+    "shasum": "56ea6bb19e6386b1bc75549ca6f6bd35d43694f8",
+    "sha256": "c3efaa5759cce05bfd72f9e5ff1dee05297c0bffb84d9192b54f493d6bfea672",
+    "integrity": "sha512-5etJoJls4Y8mewN16h+QtOcu/+GHAszHAnGX1MCWpXJvAX9C+MzYEPZJ8naQe+HRUpZjL8wcDoSFfSr1PHwiHA=="
   }
 ]

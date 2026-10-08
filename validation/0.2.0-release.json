@@ -1,0 +1,56 @@
+{
+  "version": "0.2.0",
+  "sourceRevision": "b94a184324fef017d3c49edc8732536b32ec57e7",
+  "hostBaseline": "DSH Web 0.2.0-rc.2",
+  "nxBaseline": "NX 12 Space Systems Thermal",
+  "browserVisualReview": "blocked by saved site permission; not performed",
+  "artifacts": [
+    {
+      "name": "lbk-dsh-satellite-thermal-0.2.0.tgz",
+      "bytes": 322695,
+      "sha256": "c3efaa5759cce05bfd72f9e5ff1dee05297c0bffb84d9192b54f493d6bfea672"
+    },
+    {
+      "name": "dsh-satellite-thermal-0.2.0-source.zip",
+      "bytes": 489222,
+      "sha256": "ca8b7f07df08eaa2f009cf78b63216dbcbc06c3553b73d883bd4bd819f65019d"
+    },
+    {
+      "name": "dsh_satellite_thermal_executor-0.1.0-py3-none-any.whl",
+      "bytes": 52270,
+      "sha256": "a05e9fa172396d23bddaabb57575cfaf47c2a6023b92c714589c4673806a7ade"
+    },
+    {
+      "name": "dsh-thermal-web-0.2.0-installation.zip",
+      "bytes": 919433,
+      "sha256": "58e74b9d4dd27c13ef47c9b8009220b6cf574573a2f66fe8ea270652baa54edb"
+    }
+  ],
+  "validationDate": "2026-10-08",
+  "migrationBaseline": "c365c56",
+  "tests": {
+    "service": {
+      "passed": 35,
+      "skipped": 0
+    },
+    "web": {
+      "passed": 11
+    },
+    "plugin": {
+      "passed": 11
+    }
+  },
+  "typescriptAndViteBuild": "passed",
+  "pluginClientBuild": "passed",
+  "packageSmoke": [
+    "create project",
+    "session binding",
+    "context retrieval",
+    "health capabilities"
+  ],
+  "localStartPreflight": "passed; CheckOnly; no service started",
+  "installedIntoUserDsh": false,
+  "liveServicesRestarted": false,
+  "nxSolverRerun": false,
+  "unrelatedWorkerEditsIncluded": false
+}
