@@ -847,7 +847,10 @@ def wait_for_solver_files(sim_path, solution_name, timeout_seconds=3600):
         log_complete = False
         if os.path.exists(log_path):
             with open(log_path, "r", errors="replace") as stream:
-                log_complete = "End of run" in stream.read()
+                log_text=stream.read()
+                if 'User requested STOP' in log_text:
+                    raise RuntimeError('Native SST stopped before temperature results; log reports User requested STOP: '+log_path)
+                log_complete = "End of run" in log_text
         if log_complete and os.path.exists(result_path) and os.path.getsize(result_path) > 0:
             return {"log_path": log_path, "result_path": result_path}
         time.sleep(5.0)

@@ -73,9 +73,9 @@ def export_mesh(uf, mesh_rows, raw_dir, output_dir, snapshot):
         row["elementCount"] = len(tags)
         row["nodeCount"] = len([x for x in nodes.values() if x["business_id"] == cid])
         volumes[cid] = volume
-        if row['kind']=='solid' and any(e['business_id']==cid and e['element_type']=='HEX8' for e in elements):
+        if row['kind']=='solid':
             source=next(c['volumeMm3'] for c in snapshot['components'] if c['id']==cid)
-            if abs(volume/source-1)>.02:raise RuntimeError('Actual HEX8 meshed volume differs from STEP by more than 2 percent: '+cid)
+            if abs(volume/source-1)>.02:raise RuntimeError('Actual solid meshed volume differs from STEP by more than 2 percent: '+cid)
         surfaces[cid] = triangulate(list(boundary.values()))
     os.makedirs(raw_dir, exist_ok=True)
     for filename, fields, rows in (("nodes_geometry.csv",["node_id","x_mm","y_mm","z_mm","business_id"],list(nodes.values())),("elements.csv",["element_id","element_type","n1","n2","n3","n4","n5","n6","n7","n8","business_id"],elements)):

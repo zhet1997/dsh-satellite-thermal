@@ -267,6 +267,7 @@ def build_model(task,snapshot,session,uf):
         if component["kind"]=="shell":
             mesh = shell_mesh(fem,cae_body,size,uf)
         elif cid in snapshot['settings'].get('sweptSolidComponentIds',[]):
+            size=float(snapshot['settings'].get('sweptMeshSizeMm',size))
             mesh=swept_plate_mesh(fem,cae_body,component,size,uf)
         else:
             mesh,size,_,_ = legacy.create_tet_mesh(fem,cae_body,size,retry_scales=(1.0,))
@@ -284,6 +285,14 @@ def build_model(task,snapshot,session,uf):
     mesh_report = export_mesh(uf,mesh_rows,task["raw_results_dir"],task["output_dir"],snapshot)
     facet_map = map_exported_facets(task['raw_results_dir'],snapshot)
     facet_specs = {}
+    source_by_id=dict((c['id'],c) for c in snapshot['components'])
+    flux_faces=set()
+    for boundary in snapshot['boundaries']:
+        if boundary['kind']=='heatflux' and float(boundary['value'])!=0:
+            for target in boundary['targets']:
+                flux_faces.update([target['faceId']] if target.get('faceId') else [f['id'] for f in source_by_id[target['componentId']]['faces']])
+    if any(float(value) for case in snapshot.get('cases',[]) for value in case.get('flux',{}).values()) or any(float(value) for case in snapshot.get('cases',[]) for spectrum in case.get('fluxComponents',{}).values() for value in spectrum.values()):
+        flux_faces.update(facet_map)
     # Each mesh commit can rebuild the polygon model and invalidate objects
     # captured before subsequent meshes. Discover groups only after meshing.
     for component in snapshot['components']:
@@ -301,7 +310,7 @@ def build_model(task,snapshot,session,uf):
         by_label = dict((int(e.Label),e) for e in elements)
         for face in component['faces']:
             fid=face['id']
-            if fid not in facet_map:
+            if fid not in facet_map or fid not in flux_faces:
                 continue
             mapped=facet_map[fid]
             groups['element-faces:'+fid]=fem.CaeGroups.CreateGroup('ELEM_FACE_'+legacy.safe_name(fid),[by_label[label].GetElemFace(index) for label,index in mapped['members']])
@@ -597,7 +606,9 @@ def solve(task,session):
     session.Parts.SetWork(sim)
     solution=next(s for s in sim.Simulation.Solutions if s.Name=="steady_state_thermal")
     sim.Simulation.ActiveSolution=solution
-    check=solution.Solve(NXOpen.CAE.SimSolution.SolveOption.WriteSolverInputFile,NXOpen.CAE.SimSolution.SetupCheckOption.CompleteCheckAndOutputErrors)
+    # Solve performs the complete setup check and writes the input itself.
+    # A preceding WriteSolverInputFile duplicates the expensive native export.
+    check='CompleteCheckAndOutputErrors requested within Solve'
     status=solution.Solve(NXOpen.CAE.SimSolution.SolveOption.Solve,NXOpen.CAE.SimSolution.SetupCheckOption.CompleteCheckAndOutputErrors)
     files=legacy.wait_for_solver_files(task["sim_path"],solution.Name,task["solver_timeout_seconds"])
     save(sim)

@@ -80,6 +80,10 @@ def map_exported_facets(raw_dir, snapshot):
             by_component.setdefault(row['business_id'], []).append(row)
     result = {}
     for component in snapshot['components']:
-        if component['kind'] == 'solid' and all(f['geometryType'] == 'PLANE' for f in component['faces']):
+        # Rotated planar sweep caps can be serialized as BSPLINE. A swept
+        # component is eligible only if every native exterior facet passes
+        # the same plane, normal, unique-region and area-closure checks.
+        swept=component['id'] in snapshot['settings'].get('sweptSolidComponentIds',[])
+        if component['kind'] == 'solid' and (swept or all(f['geometryType'] == 'PLANE' for f in component['faces'])):
             result.update(map_component_facets(component, nodes, by_component[component['id']]))
     return result
